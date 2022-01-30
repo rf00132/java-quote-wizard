@@ -1,6 +1,13 @@
 package com.reflection.QuoteWizard;
-import org.junit.*;
-import static org.junit.Assert.*;
+
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ONE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuoteTest {
 
@@ -10,15 +17,15 @@ public class QuoteTest {
     QuoteItem testItem2;
     Quote testQuote;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testQuote = new Quote(0);
         testProduct1 = new Product(0);
-        testProduct1.setPrice(10);
+        testProduct1.setPrice(new BigDecimal(10));
         testItem1 = new QuoteItem(0, testProduct1, testQuote);
 
         testProduct2 = new Product(1);
-        testProduct2.setPrice(5);
+        testProduct2.setPrice(new BigDecimal(5));
         testItem2 = new QuoteItem(1, testProduct2, testQuote);
 
 
@@ -28,26 +35,26 @@ public class QuoteTest {
     @Test
     public void addItemTest(){
         testQuote.AddToBasket(testItem2);
-        assertEquals(5, testQuote.getBasket().get(1).getProduct().getPrice(), 0.0);
+        assertEquals(5, testQuote.getBasket().get(1).getProduct().getPrice().doubleValue());
     }
 
     @Test
     public void removeItemTest(){
         testQuote.AddToBasket(testItem2);
         testQuote.DeleteFromBasket(testItem1);
-        assertEquals(5, testQuote.getBasket().get(0).getProduct().getPrice(), 0.0);
+        assertEquals(5, testQuote.getBasket().get(0).getProduct().getPrice().doubleValue());
     }
 
     @Test
     public void checkPriceTotalOnAddToBasket(){
         testQuote.AddToBasket(testItem2);
-        assertEquals(15, testQuote.getBasketTotal(), 0.0);
+        assertEquals(15, testQuote.getBasketTotal().doubleValue());
     }
 
     @Test
     public void checkPriceVatTotalOnAddToBasket(){
         testQuote.AddToBasket(testItem2);
-        assertEquals(testQuote.getBasketVatTotal(), 15 * (1 + testQuote.getBasket().get(0).getProduct().getVatRate()), 0.0);
+        assertEquals(testQuote.getBasketVatTotal(), testQuote.getBasket().get(0).getProduct().getVatRate().add(ONE).multiply(new BigDecimal(15)));
     }
 
 }

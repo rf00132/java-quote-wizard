@@ -1,16 +1,22 @@
 package com.reflection.QuoteWizard;
-import org.junit.*;
-import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ONE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuoteItemTest {
 
     Product testProduct;
     QuoteItem testItem;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testProduct = new Product(0);
-        testProduct.setPrice(10);
+        testProduct.setPrice(new BigDecimal(10));
         testItem = new QuoteItem(0, testProduct, null);
     }
 
@@ -29,13 +35,13 @@ public class QuoteItemTest {
     @Test
     public void priceAutoUpdateTest(){
         testItem.incrementProductAmount(3);
-        assertEquals(40, testItem.getTotal(), 0.0);
+        assertEquals(40, testItem.getTotal().doubleValue());
     }
 
     @Test
     public void priceVatAutoUpdateTest(){
         testItem.incrementProductAmount(3);
-        assertEquals(testItem.getVatTotal(), 40 * (1 + testItem.getProduct().getVatRate()), 0.0);
+        assertEquals(testItem.getVatTotal(), testItem.getProduct().getVatRate().add(ONE).multiply(new BigDecimal(40)));
     }
 
 }

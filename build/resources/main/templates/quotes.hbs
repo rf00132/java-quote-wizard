@@ -1,25 +1,27 @@
+{{# partial "title"}}Quotes{{/partial}}
+
 {{# partial "content"}}
     <div class="quotes">
         <h1>Current Quotes</h1>
-        <!--TODO: add foreach loop to display all items-->
         <div class="card-container">
-            <div class="card">
-                <h3>Quote Name</h3>
-                <div class="card-detail">
-                    <p>Total Price: </p>
-                    <p id="quotePriceDisplay">£10</p>
+            {{#each quotes}}
+                <div class="card">
+                    <h3>{{ quoteName }}</h3>
+                    <div class="card-detail">
+                        <p>Total Price: </p>
+                        <p id="quotePriceDisplay">{{ basketTotal }}</p>
+                    </div>
+                    <div class="card-detail">
+                        <p>Num. of Items: </p>
+                        <p id="quoteItemAmountDisplay"> {{ amountInBasket }}</p>
+                    </div>
+                    <div class="card-detail">
+                        <p>Contact: </p>
+                        <p id="quoteContactDisplay">{{ quoteContact }}</p>
+                    </div>
+                    <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
                 </div>
-                <div class="card-detail">
-                    <p>Num. of Items: </p>
-                    <p id="quoteItemAmountDisplay">2</p>
-                </div>
-                <div class="card-detail">
-                    <p>Contact: </p>
-                    <p id="quoteContactDisplay">joebloggs@bloggsoft.com</p>
-                </div>
-                <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
-
-            </div>
+            {{/each}}
         </div>
         <a class="btn-add" href="/quotes-add"><i class="fas fa-plus"></i></a>
     </div>

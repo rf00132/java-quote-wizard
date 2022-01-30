@@ -32,14 +32,14 @@ public class Main {
         get("/quotes", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("quotes", quotes.getList());
-            return new ModelAndView(model, "quotes.hbs");
+            return new ModelAndView(null, "quotes.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/quotes-add", (req, res) -> {
+        post("/quotes-add", (req, res) -> {
             return new ModelAndView(null, "quotes-add.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/quotes-update", (req, res) -> {
+        post("/quotes-update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("selected-quote", quotes.getSelectedQuote());
             model.put("selected-basket", quotes.getSelectedQuote().getBasket());
@@ -61,11 +61,11 @@ public class Main {
             return new ModelAndView(null, "products.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/products-add", (req, res) -> {
+        post("/products-add", (req, res) -> {
             return new ModelAndView(null, "products-add.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/products-update", (req, res) -> {
+        post("/products-update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("selected-product", products.getSelectedProduct());
             return new ModelAndView(null, "products-update.hbs");

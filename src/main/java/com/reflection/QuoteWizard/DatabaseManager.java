@@ -7,14 +7,14 @@ import java.util.Locale;
 
 
 public class DatabaseManager {
-    static Connection con;
-    static Statement smt;
-    static ResultSet rs;
+    Connection con;
+    Statement smt;
+    ResultSet rs;
 
-    static List<String> StatementTypes = List.of("SELECT", "UPDATE", "DELETE", "INSERT");
-    static List<String> TableNames = List.of("Quote", "Product", "QuoteProduct", "TestDB");
+    final List<String> StatementTypes = List.of("SELECT", "UPDATE", "DELETE", "INSERT");
+    final List<String> TableNames = List.of("Quote", "Product", "QuoteProduct", "TestDB");
 
-    public static void InitDataBases(){
+    public void InitDataBases(){
         try {
             //TODO: set up connection properly to database
             con = DriverManager.getConnection("jdbc:mysql://localhost/6543?" +
@@ -27,7 +27,7 @@ public class DatabaseManager {
         }
     }
 
-    public static List GetWholeTable(int tableToQueryIndex){
+    public List GetWholeTable(int tableToQueryIndex){
         try{
             String query = StatementTypes.get(0) + "SELECT * FROM " + TableNames.get(tableToQueryIndex);
             smt = con.createStatement();
@@ -39,12 +39,12 @@ public class DatabaseManager {
         }
     }
 
-    public static List SearchDatabase(int tableToQueryIndex, String columnToQuery, String queryTerm){
+    public List SearchDatabase(int tableToQueryIndex, String columnToQuery, String queryTerm){
         try{
             String query = StatementTypes.get(0) + "SELECT * FROM " + TableNames.get(tableToQueryIndex)
                     + " WHERE " + columnToQuery + " LIKE '%" + queryTerm+"%'";
-            smt = con.createStatement();
-            rs = smt.executeQuery(query);
+            smt = con.prepareStatement(query);
+
             return ResultsToList(tableToQueryIndex);
         } catch (SQLException ex){
             //TODO: handle errors
@@ -52,7 +52,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void UpdateDatabase(int tableToQueryIndex, String columnToQuery, int productId, String updatedTerm ){
+    public void UpdateDatabase(int tableToQueryIndex, String columnToQuery, int productId, String updatedTerm ){
 
         try{
             String query = "UPDATE " + TableNames.get(tableToQueryIndex) + " set " + columnToQuery
@@ -63,7 +63,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void DeleteFromDatabase(int tableToQueryIndex, String columnToQuery, String queryTerm) {
+    public void DeleteFromDatabase(int tableToQueryIndex, String columnToQuery, String queryTerm) {
         try{
             String query = StatementTypes.get(2) + " FROM " + TableNames.get(tableToQueryIndex)
                     + " WHERE " + columnToQuery + "=" + queryTerm;
@@ -73,7 +73,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void InsertIntoQuoteDatabase(Quote newEntry) {
+    public void InsertIntoQuoteDatabase(Quote newEntry) {
         try{
             String query = StatementTypes.get(3) + " INTO " + TableNames.get(0)
                     + " VALUES (" + newEntry.getName() + ", " + newEntry.getContact() + ")";
@@ -83,7 +83,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void InsertIntoProductDatabase(Product newEntry) {
+    public void InsertIntoProductDatabase(Product newEntry) {
         try{
             String query = StatementTypes.get(3) + " INTO " + TableNames.get(1)
                     + " VALUES (" + newEntry.getName() + ", " + newEntry.getPrice() + ", " + newEntry.getVatRate() +  ")";
@@ -93,7 +93,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void InsertIntoQuoteProductDatabase(QuoteItem newEntry) {
+    public void InsertIntoQuoteProductDatabase(QuoteItem newEntry) {
         try{
             String query = StatementTypes.get(3) + " INTO " + TableNames.get(2)
                     + " VALUES (" + newEntry.getQuote().getId() + ", " + newEntry.getProduct().getId() + ")";
@@ -103,7 +103,7 @@ public class DatabaseManager {
         }
     }
 
-    public static void InsertIntoTestDatabase(String testString, int testInt) {
+    public void InsertIntoTestDatabase(String testString, int testInt) {
         try{
             String query = StatementTypes.get(3) + " INTO " + TableNames.get(3)
                     + " VALUES (" + testString + ", " + testInt + ")";
@@ -115,7 +115,7 @@ public class DatabaseManager {
 
 
 
-    private static List ResultsToList(int tableIndex) throws SQLException {
+    private List ResultsToList(int tableIndex) throws SQLException {
         List listOfResults = new ArrayList<>();
 
         while(rs.next()){
@@ -131,8 +131,8 @@ public class DatabaseManager {
                 case 1:
                     Product product = new Product(rs.getInt("idProduct"));
                     product.setName(rs.getString("productName"));
-                    product.setPrice(rs.getDouble("productPrice"));
-                    product.setVatRate(rs.getDouble("productVatRate"));
+                    product.setPrice(rs.getBigDecimal("productPrice"));
+                    product.setVatRate(rs.getBigDecimal("productVatRate"));
                     listOfResults.add(product);
                     break;
                 case 2:

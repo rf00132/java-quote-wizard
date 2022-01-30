@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.reflection.QuoteWizard.QuoteTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-01-30T15:01:26" hostname="MCWHEELS" time="0.019">
+  <properties/>
+  <testcase name="removeItemTest()" classname="com.reflection.QuoteWizard.QuoteTest" time="0.016"/>
+  <testcase name="addItemTest()" classname="com.reflection.QuoteWizard.QuoteTest" time="0.0"/>
+  <testcase name="checkPriceVatTotalOnAddToBasket()" classname="com.reflection.QuoteWizard.QuoteTest" time="0.0"/>
+  <testcase name="checkPriceTotalOnAddToBasket()" classname="com.reflection.QuoteWizard.QuoteTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

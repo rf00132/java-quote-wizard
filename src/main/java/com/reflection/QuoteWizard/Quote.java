@@ -1,41 +1,47 @@
 package com.reflection.QuoteWizard;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.BigDecimal.ZERO;
+
 public class Quote{
     private int quoteId;
-    public int getId(){ return quoteId; }
-
     private String quoteName;
-    public String getName() { return quoteName; }
-    public void setName(String newName){ quoteName = newName; }
-
     private String quoteContact;
-    public String getContact(){ return quoteContact; }
-    public void setContact(String newContact){ quoteContact = newContact; }
-
     private List<QuoteItem> basket;
-    public List<QuoteItem> getBasket(){ return basket; }
-
-    private double basketTotal;
-    public double getBasketTotal() { return basketTotal; }
-
-    private double basketVatTotal;
-    public double getBasketVatTotal() { return basketVatTotal; }
-
+    private BigDecimal basketTotal;
+    private BigDecimal basketVatTotal;
     private int amountInBasket;
+
+    public Quote(int id){
+        quoteId = id;
+        quoteName = "Quote " + quoteId;
+        basket = new ArrayList<>();
+        basketTotal = ZERO;
+        basketVatTotal = ZERO;
+    }
+
+    public int getId(){ return quoteId; }
+    public String getName() { return quoteName; }
+    public String getContact(){ return quoteContact; }
+    public List<QuoteItem> getBasket(){ return basket; }
+    public BigDecimal getBasketTotal() { return basketTotal; }
+    public BigDecimal getBasketVatTotal() { return basketVatTotal; }
     public int getAmountInBasket(){ return amountInBasket; }
 
+    public void setName(String newName){ quoteName = newName; }
+    public void setContact(String newContact){ quoteContact = newContact; }
 
-    public void UpdateProductTotals(){
-        double newTotal = 0;
-        double newVatTotal = 0;
+    private void UpdateProductTotals(){
+        BigDecimal newTotal = ZERO;
+        BigDecimal newVatTotal = ZERO;
         int newAmount = 0;
 
         for(QuoteItem item : basket){
-            newTotal += item.getTotal();
-            newVatTotal += item.getVatTotal();
+            newTotal.add(item.getTotal());
+            newVatTotal.add(item.getVatTotal());
             newAmount += item.getProductAmount();
         }
 
@@ -46,21 +52,26 @@ public class Quote{
 
     public void AddToBasket(QuoteItem itemToAdd){
         basket.add(itemToAdd);
-        basketTotal += itemToAdd.getTotal();
-        basketVatTotal += itemToAdd.getVatTotal();
+        basketTotal = basketTotal.add(itemToAdd.getTotal());
+        basketVatTotal = basketVatTotal.add(itemToAdd.getVatTotal());
     }
 
     public void DeleteFromBasket(QuoteItem itemToDelete){
         basket.remove(itemToDelete);
-        if(basketTotal - itemToDelete.getTotal() > 0) basketTotal -= itemToDelete.getTotal();
-        else basketTotal = 0;
-        if(basketTotal - itemToDelete.getTotal() > 0) basketVatTotal -= itemToDelete.getVatTotal();
-        else basketVatTotal = 0;
+        if(basketTotal.doubleValue() - itemToDelete.getTotal().doubleValue() > 0) {
+            basketTotal = basketTotal.subtract(itemToDelete.getTotal());
+        }
+        else {
+            basketTotal = ZERO;
+        }
+
+        if(basketVatTotal.doubleValue() - itemToDelete.getTotal().doubleValue() > 0) {
+            basketVatTotal = basketVatTotal.subtract(itemToDelete.getVatTotal());
+        }
+        else{
+            basketVatTotal = ZERO;
+        }
     }
 
-    public Quote(int id){
-        quoteId = id;
-        quoteName = "Quote " + quoteId;
-        basket = new ArrayList<>();
-    }
+
 }

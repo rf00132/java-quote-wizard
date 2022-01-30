@@ -1,22 +1,24 @@
 package com.reflection.QuoteWizard;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 public class DatabaseTest {
+    DatabaseManager dm;
 
-    @Before
+    @BeforeEach
     public void setUp(){
-        DatabaseManager.InitDataBases();
-        DatabaseManager.InsertIntoTestDatabase(
+        dm = new DatabaseManager();
+        dm.InitDataBases();
+        dm.InsertIntoTestDatabase(
                 "asdf",1);
     }
 
     @Test
     public void searchTest(){
-        List list = DatabaseManager.SearchDatabase(3, "testString", "asdf");
+        List list = dm.SearchDatabase(3, "testString", "asdf");
 
     }
 }

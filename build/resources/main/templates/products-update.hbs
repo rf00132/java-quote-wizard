@@ -1,7 +1,6 @@
 {{# partial "content"}}
     <div class="products">
-        <!-- TODO: add data input  -->
-        <h1>Product Name</h1>
+        <h1>{{ productName }}</h1>
         <div class="card-container">
             <div class="card">
                 <div>
@@ -9,11 +8,11 @@
                 </div>
                 <div class="card-detail">
                     <h3>Cost: </h3>
-                    <h3>£10</h3>
+                    <h3>£{{ productPrice }}</h3>
                 </div>
                 <div class="card-detail">
                     <h3>With VAT: </h3>
-                    <h3>£12</h3>
+                    <h3>{{ grandTotal }}</h3>
                 </div>
             </div>
 
@@ -34,7 +33,7 @@
             </div>
         </div>
         <!-- TODO: on click change from fa-pen to fa-check (or tick equivalent) also have the update box appear -->
-        <span id="editItem" class="btn-edit" href="/quotes-add"><i class="fas fa-pen"></i></span>
+        <span id="editItem" class="btn-edit"><i class="fas fa-pen"></i></span>
     </div>
 {{/partial}}
 

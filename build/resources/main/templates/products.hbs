@@ -4,8 +4,9 @@
 
         <div class="card-container">
             <!--TODO: add foreach loop to display all items-->
+            {{#each products}}
             <div class="card">
-                <h3>Product Name</h3>
+                <h3>{{ productName }}</h3>
                 <div>
                     <div>
                         <!-- TODO: add image display for product -->
@@ -13,20 +14,21 @@
                     <div>
                         <div class="card-detail">
                             <p>Total: </p>
-                            <p id="productTotalDisplay">£10.00</p>
+                            <p id="productTotalDisplay">£{{ productPrice }}</p>
                         </div>
                         <div class="card-detail">
                             <p>VAT: </p>
-                            <p id="productVatDisplay">£2.00</p>
+                            <p id="productVatDisplay">£{{ vatCost }}</p>
                         </div>
                         <div class="card-detail">
                             <p>Total + VAT: </p>
-                            <p id="productTotalVatDisplay">£12.00</p>
+                            <p id="productTotalVatDisplay">£{{ grandTotal }}</p>
                         </div>
                         <span class="btn-add-card"><i class="fas fa-plus"></i></span>
                         <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
                     </div>
                 </div>
+            {{/each}}
             </div>
         </div>
         <a class="btn-add" href="/products-add"><i class="fas fa-plus"></i></a>

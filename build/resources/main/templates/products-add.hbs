@@ -1,26 +1,25 @@
 {{# partial "content"}}
-    <div class="quotes">
+    <div class="products">
         <!-- TODO: add data input  -->
-        <h1>Quote Name Goes Here</h1>
-
+        <h1>Add a Product</h1>
         <div class="card-container">
-            <a href="/quotes-update" class="card">
-                <h3>Quote Name</h3>
+            <div class="add">
                 <div class="card-detail">
-                    <p>Total Price: </p>
-                    <p id="quotePriceDisplay">£10</p>
+                    <label for="ProductNameInput">Product Name:</label>
+                    <input id="ProductNameInput">
                 </div>
                 <div class="card-detail">
-                    <p>Num. of Items: </p>
-                    <p id="quoteItemAmountDisplay">2</p>
+                    <label for="ProductCostInput">Product Cost:</label>
+                    <input id="ProductCostInput">
                 </div>
                 <div class="card-detail">
-                    <p>Contact: </p>
-                    <p id="quoteContactDisplay">joebloggs@bloggsoft.com</p>
+                    <label for="ProductVatInput">Product VAT Rate:</label>
+                    <input id="ProductVatInput">
                 </div>
-            </a>
+
+                <button>CREATE</button>
+            </div>
         </div>
-        <a class="btn-add" href="/quotes-add"><i class="fas fa-plus"></i></a>
     </div>
 {{/partial}}
 

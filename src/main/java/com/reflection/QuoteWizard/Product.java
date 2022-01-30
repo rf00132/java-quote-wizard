@@ -1,52 +1,71 @@
 package com.reflection.QuoteWizard;
 
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ZERO;
+
 public class Product{
 
     private int productId;
-    public int getId(){ return productId; }
-
     private String productName;
-    public String getName(){ return productName; }
-    public void setName(String newName){ productName = newName; }
-
-    private double productPrice;
-    public double getPrice(){ return productPrice; }
-    public void setPrice(double newPrice){
-        productPrice = newPrice;
-        setVatCost();
-    }
-
-    private double vatRate = 0.2;
-    public double getVatRate() { return vatRate; }
-    public void setVatRate(double newRate){
-        vatRate = newRate;
-        setVatCost();
-    }
-
-    private double vatCost;
-    private double getVatCost(){ return vatCost; }
-    public void setVatCost() {
-        vatCost = vatRate * productPrice;
-        setGrandTotal();
-    }
-
-    private double grandTotal;
-    public double getGrandTotal() { return grandTotal; }
-    public void setGrandTotal(){ grandTotal = vatCost + productPrice; }
-
-    private double[] productDimensions;
-    public double[] getDimensions(){ return productDimensions; }
-    public void setDimensions(double[] newDimensions){ productDimensions = newDimensions; }
-
-    //TODO: add product image field
-
+    private BigDecimal productPrice;
+    private BigDecimal vatRate = new BigDecimal(0.2);
+    private BigDecimal vatCost;
+    private BigDecimal grandTotal;
 
     public Product(int id){
         productId = id;
         productName = "";
-        productPrice = 0;
-        productDimensions = new double[]{0, 0, 0};
-
-        //todo: possibly add default image for product constructor
+        productPrice = ZERO;
     }
+
+    //public methods
+    public int getId(){
+        return productId;
+    }
+
+    public String getName() {
+        return productName;
+    }
+
+    public BigDecimal getPrice(){
+        return productPrice;
+    }
+
+    public BigDecimal getVatRate() {
+        return vatRate;
+    }
+
+    public BigDecimal getVatCost() {
+        return vatCost;
+    }
+
+    public BigDecimal getGrandTotal() {
+        return grandTotal;
+    }
+
+    public void setName(String newName) {
+        productName = newName;
+    }
+
+    public void setPrice(BigDecimal newPrice) {
+        productPrice = newPrice;
+        updateVatCost();
+    }
+
+    public void setVatRate(BigDecimal newRate) {
+        vatRate = newRate;
+        updateVatCost();
+    }
+
+    //private methods
+    private void updateVatCost() {
+        vatCost = vatRate.multiply(productPrice);
+        updateGrandTotal();
+    }
+
+    private void updateGrandTotal(){
+        grandTotal = productPrice.add(vatCost);
+    }
+
 }

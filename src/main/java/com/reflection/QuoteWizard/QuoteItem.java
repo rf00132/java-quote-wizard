@@ -1,32 +1,15 @@
 package com.reflection.QuoteWizard;
 
+import java.math.BigDecimal;
+
 public class QuoteItem {
 
     private int quoteItemId;
-    public int getId(){ return quoteItemId; }
-
     private Product product;
-    public Product getProduct(){ return product; }
-
     private Quote quote;
-    public Quote getQuote(){ return quote; }
-
-    private double productTotal;
-    public double getTotal(){ return productTotal; }
-    private void setTotal(){ productTotal = product.getPrice() * productAmount; }
-
-    private double productTotalVat;
-    public double getVatTotal() { return productTotalVat; }
-    private void setVatTotal(){ productTotalVat = productTotal*( 1 + product.getVatRate() ); }
-
+    private BigDecimal productTotal;
+    private BigDecimal productTotalVat;
     private int productAmount;
-    public int getProductAmount(){ return productAmount; }
-    public void incrementProductAmount(int amountToAdd){
-        productAmount += amountToAdd;
-        if(productAmount < 0) productAmount = 0;
-        setTotal();
-        setVatTotal();
-    }
 
     public QuoteItem(int id, Product product, Quote quote){
         quoteItemId = id;
@@ -34,8 +17,52 @@ public class QuoteItem {
         this.quote = quote;
         productAmount = 1;
         productTotal = this.product.getPrice();
-        quoteItemId = IdManager.GetNextQuoteItemId();
+        productTotalVat = this.product.getGrandTotal();
     }
+
+    //public methods
+    public int getId(){
+        return quoteItemId;
+    }
+
+    public Product getProduct(){
+        return product;
+    }
+
+    public Quote getQuote(){
+        return quote;
+    }
+
+    public BigDecimal getTotal(){
+        return productTotal;
+    }
+
+    public BigDecimal getVatTotal() {
+        return productTotalVat;
+    }
+
+    public int getProductAmount(){
+        return productAmount;
+    }
+
+    //private methods
+    private void setTotal(){
+        productTotal = product.getPrice().multiply(new BigDecimal(productAmount));
+    }
+
+    private void setVatTotal(){
+        //sets total with vat equal to the total multiply by 1 + vatrate
+        productTotalVat = productTotal.multiply(product.getVatRate().add(BigDecimal.ONE));
+    }
+
+    public void incrementProductAmount(int amountToAdd){
+        productAmount += amountToAdd;
+        if(productAmount < 0) productAmount = 0;
+        setTotal();
+        setVatTotal();
+    }
+
+
 
 
 }
