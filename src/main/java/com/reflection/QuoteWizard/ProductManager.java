@@ -1,17 +1,18 @@
 package com.reflection.QuoteWizard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductManager{
-    private DatabaseManager dm;
-    private static List<Product> products;
+    private final DatabaseManager dm;
+    private List<Product> products = new ArrayList<>();
     private Product selectedProduct;
 
     public ProductManager(){
         dm = new DatabaseManager();
     }
 
-    public static List<Product> getList(){
+    public List<Product> getList(){
         return products;
     }
 
@@ -19,7 +20,7 @@ public class ProductManager{
         return selectedProduct;
     }
 
-    public static void InitialiseList(List currentData){
+    public void InitialiseList(List<Product> currentData){
         products = currentData;
     }
 
@@ -29,26 +30,29 @@ public class ProductManager{
 
     public void addItem(Product itemToAdd) {
         products.add(itemToAdd);
-        dm.InsertIntoProductDatabase(itemToAdd);
+        //dm.InsertIntoProductDatabase(itemToAdd);
     }
 
     public void deleteItem(Product itemToDelete) {
         products.remove(itemToDelete);
-        dm.DeleteFromDatabase(1, "idProduct", "" + itemToDelete.getId());
+        //dm.DeleteFromDatabase(1, "idProduct", "" + itemToDelete.getId());
     }
 
     public void updateItem(Product updatedItem) {
-        if(updatedItem.getName() != products.get(updatedItem.getId()).getName()){
-            dm.UpdateDatabase(1, "productName", updatedItem.getId(), updatedItem.getName());
+        if(!updatedItem.getName().equals(products.get(updatedItem.getId()).getName())){
+            //dm.UpdateDatabase(1, "productName", updatedItem.getId(), updatedItem.getName());
+            products.get(updatedItem.getId()).setName(updatedItem.getName());
         }
-        if(updatedItem.getPrice() != products.get(updatedItem.getId()).getPrice()){
-            dm.UpdateDatabase(1, "productPrice", updatedItem.getId(), updatedItem.getPrice() + "");
+        if(!updatedItem.getPrice().equals(products.get(updatedItem.getId()).getPrice())){
+            //dm.UpdateDatabase(1, "productPrice", updatedItem.getId(), updatedItem.getPrice() + "");
+            products.get(updatedItem.getId()).setPrice(updatedItem.getPrice());
         }
-        if(updatedItem.getVatRate() != products.get(updatedItem.getId()).getVatRate()){
-            dm.UpdateDatabase(1, "productVatRate", updatedItem.getId(), updatedItem.getVatRate() + "");
+        if(!updatedItem.getVatRate().equals(products.get(updatedItem.getId()).getVatRate())){
+            //dm.UpdateDatabase(1, "productVatRate", updatedItem.getId(), updatedItem.getVatRate() + "");
+            products.get(updatedItem.getId()).setVatRate(updatedItem.getVatRate());
         }
 
-        products.get(updatedItem.getId()).equals(updatedItem);
+
     }
 
     public Product getItem(int searchId){

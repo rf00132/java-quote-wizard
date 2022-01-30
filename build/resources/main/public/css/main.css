@@ -112,7 +112,7 @@ input, label {
   max-width: 400px;
   margin: 0 auto;
 }
-.card-container .card, .card-container .update {
+.card-container .card, .card-container .update, .card-container .add {
   position: relative;
   min-width: 150px;
   width: 350px;
@@ -123,42 +123,39 @@ input, label {
   padding: 10px 0 20px;
   font-weight: bold;
 }
-.card-container .card .card-detail, .card-container .update .card-detail {
+.card-container .card .card-detail, .card-container .update .card-detail, .card-container .add .card-detail {
   display: flex;
   justify-content: left;
   padding: 10px 20px;
 }
-.card-container .card .card-detail p, .card-container .card .card-detail h3, .card-container .update .card-detail p, .card-container .update .card-detail h3 {
+.card-container .card .card-detail p, .card-container .card .card-detail h3, .card-container .update .card-detail p, .card-container .update .card-detail h3, .card-container .add .card-detail p, .card-container .add .card-detail h3 {
   margin: 0 5px;
   text-align: left;
 }
-.card-container .card:hover, .card-container .update:hover {
+.card-container .card:hover, .card-container .update:hover, .card-container .add:hover {
   color: black;
   background: white;
 }
-.card-container .card:hover a, .card-container .update:hover a {
+.card-container .card:hover a, .card-container .update:hover a, .card-container .add:hover a {
   color: black;
 }
-.card-container .card:hover input, .card-container .update:hover input {
+.card-container .card:hover input, .card-container .update:hover input, .card-container .add:hover input {
   background: gray;
   color: white;
 }
-.card-container .card:hover button:hover, .card-container .update:hover button:hover {
+.card-container .card:hover button:hover, .card-container .update:hover button:hover, .card-container .add:hover button:hover {
   color: white;
 }
-.card-container .card:hover span, .card-container .card:hover button, .card-container .update:hover span, .card-container .update:hover button {
+.card-container .card:hover span, .card-container .card:hover button, .card-container .update:hover span, .card-container .update:hover button, .card-container .add:hover span, .card-container .add:hover button {
   background: lightgray;
 }
-.card-container .card:hover span:hover, .card-container .card:hover button:hover, .card-container .update:hover span:hover, .card-container .update:hover button:hover {
+.card-container .card:hover span:hover, .card-container .card:hover button:hover, .card-container .update:hover span:hover, .card-container .update:hover button:hover, .card-container .add:hover span:hover, .card-container .add:hover button:hover {
   background: black;
 }
-.card-container .update {
-  display: none;
-}
-.card-container .update .card-detail {
+.card-container .update .card-detail, .card-container .add .card-detail {
   justify-content: space-between;
 }
-.card-container .update button {
+.card-container .update button, .card-container .add button {
   background: white;
   color: black;
   border: none;
@@ -166,6 +163,9 @@ input, label {
   padding: 5px 10px;
   font-weight: bold;
   margin-top: 10px;
+}
+.card-container .update {
+  display: none;
 }
 
 .btn-increment {

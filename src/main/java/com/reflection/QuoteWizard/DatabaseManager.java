@@ -7,12 +7,16 @@ import java.util.Locale;
 
 
 public class DatabaseManager {
-    Connection con;
-    Statement smt;
-    ResultSet rs;
+    /*Connection con;
 
     final List<String> StatementTypes = List.of("SELECT", "UPDATE", "DELETE", "INSERT");
     final List<String> TableNames = List.of("Quote", "Product", "QuoteProduct", "TestDB");
+
+    public DatabaseManager(){
+        InitDataBases();
+    }
+
+    //todo: look into prepared statements
 
     public void InitDataBases(){
         try {
@@ -30,8 +34,8 @@ public class DatabaseManager {
     public List GetWholeTable(int tableToQueryIndex){
         try{
             String query = StatementTypes.get(0) + "SELECT * FROM " + TableNames.get(tableToQueryIndex);
-            smt = con.createStatement();
-            rs = smt.executeQuery(query);
+            var smt = con.createStatement();
+            var rs = smt.executeQuery(query);
             return ResultsToList(tableToQueryIndex);
         } catch (SQLException ex){
             //TODO: handle errors
@@ -43,7 +47,7 @@ public class DatabaseManager {
         try{
             String query = StatementTypes.get(0) + "SELECT * FROM " + TableNames.get(tableToQueryIndex)
                     + " WHERE " + columnToQuery + " LIKE '%" + queryTerm+"%'";
-            smt = con.prepareStatement(query);
+            var smt = con.prepareStatement(query);
 
             return ResultsToList(tableToQueryIndex);
         } catch (SQLException ex){
@@ -151,4 +155,6 @@ public class DatabaseManager {
         }
         return listOfResults;
     }
+    */
+
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DatabaseTest {
     DatabaseManager dm;
-
+/*
     @BeforeEach
     public void setUp(){
         dm = new DatabaseManager();
@@ -20,5 +20,5 @@ public class DatabaseTest {
     public void searchTest(){
         List list = dm.SearchDatabase(3, "testString", "asdf");
 
-    }
+    } */
 }

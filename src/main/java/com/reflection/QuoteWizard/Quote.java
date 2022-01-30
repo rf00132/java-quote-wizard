@@ -23,16 +23,44 @@ public class Quote{
         basketVatTotal = ZERO;
     }
 
-    public int getId(){ return quoteId; }
-    public String getName() { return quoteName; }
-    public String getContact(){ return quoteContact; }
-    public List<QuoteItem> getBasket(){ return basket; }
-    public BigDecimal getBasketTotal() { return basketTotal; }
-    public BigDecimal getBasketVatTotal() { return basketVatTotal; }
-    public int getAmountInBasket(){ return amountInBasket; }
+    public int getId(){
+        return quoteId;
+    }
 
-    public void setName(String newName){ quoteName = newName; }
-    public void setContact(String newContact){ quoteContact = newContact; }
+    public String getName() {
+        return quoteName;
+    }
+
+    public String getContact(){
+        return quoteContact;
+    }
+    public List<QuoteItem> getBasket(){
+        return basket;
+    }
+
+    public BigDecimal getBasketTotal() {
+        return basketTotal;
+    }
+
+    public BigDecimal getBasketVatTotal() {
+        return basketVatTotal;
+    }
+
+    public int getAmountInBasket(){
+        return amountInBasket;
+    }
+
+    public void setName(String newName){
+        quoteName = newName;
+    }
+
+    public void setContact(String newContact){
+        quoteContact = newContact;
+    }
+
+    public void setBasket(List<QuoteItem> newBasket){
+        basket = newBasket;
+    }
 
     private void UpdateProductTotals(){
         BigDecimal newTotal = ZERO;
@@ -40,8 +68,8 @@ public class Quote{
         int newAmount = 0;
 
         for(QuoteItem item : basket){
-            newTotal.add(item.getTotal());
-            newVatTotal.add(item.getVatTotal());
+            newTotal = newTotal.add(item.getTotal());
+            newVatTotal = newVatTotal.add(item.getVatTotal());
             newAmount += item.getProductAmount();
         }
 
