@@ -1,11 +1,15 @@
-package main.java.com.reflection.QuoteWizard;
+package com.reflection.QuoteWizard;
 
 public class QuoteItem {
-    private double vatRate = 0.2;
-    public double getVatRate() { return vatRate; }
+
+    private int quoteItemId;
+    public int getId(){ return quoteItemId; }
 
     private Product product;
     public Product getProduct(){ return product; }
+
+    private Quote quote;
+    public Quote getQuote(){ return quote; }
 
     private double productTotal;
     public double getTotal(){ return productTotal; }
@@ -13,7 +17,7 @@ public class QuoteItem {
 
     private double productTotalVat;
     public double getVatTotal() { return productTotalVat; }
-    private void setVatTotal(){ productTotalVat = productTotal*( 1 + vatRate ); }
+    private void setVatTotal(){ productTotalVat = productTotal*( 1 + product.getVatRate() ); }
 
     private int productAmount;
     public int getProductAmount(){ return productAmount; }
@@ -24,10 +28,13 @@ public class QuoteItem {
         setVatTotal();
     }
 
-    public QuoteItem(Product product){
+    public QuoteItem(int id, Product product, Quote quote){
+        quoteItemId = id;
         this.product = product;
+        this.quote = quote;
         productAmount = 1;
         productTotal = this.product.getPrice();
+        quoteItemId = IdManager.GetNextQuoteItemId();
     }
 
 

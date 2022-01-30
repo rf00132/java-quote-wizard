@@ -1,11 +1,6 @@
-package test.java.com.reflection.QuoteWizard;
-
-import main.java.com.reflection.QuoteWizard.Product;
-import main.java.com.reflection.QuoteWizard.QuoteItem;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
+package com.reflection.QuoteWizard;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 public class QuoteItemTest {
 
@@ -14,33 +9,33 @@ public class QuoteItemTest {
 
     @Before
     public void setUp() {
-        testProduct = new Product();
+        testProduct = new Product(0);
         testProduct.setPrice(10);
-        testItem = new QuoteItem(testProduct);
+        testItem = new QuoteItem(0, testProduct, null);
     }
 
     @Test
     public void addProductAmountTest(){
         testItem.incrementProductAmount(10);
-        assertTrue(testItem.getProductAmount() == 11);
+        assertEquals(11, testItem.getProductAmount());
     }
 
     @Test
     public void productAmountMinIsZero(){
         testItem.incrementProductAmount(-10);
-        assertTrue(testItem.getProductAmount() == 0);
+        assertEquals(0, testItem.getProductAmount());
     }
 
     @Test
     public void priceAutoUpdateTest(){
         testItem.incrementProductAmount(3);
-        assertTrue(testItem.getTotal() == 40);
+        assertEquals(40, testItem.getTotal(), 0.0);
     }
 
     @Test
     public void priceVatAutoUpdateTest(){
         testItem.incrementProductAmount(3);
-        assertTrue(testItem.getVatTotal() == 40 * (1 + testItem.getVatRate()));
+        assertEquals(testItem.getVatTotal(), 40 * (1 + testItem.getProduct().getVatRate()), 0.0);
     }
 
 }

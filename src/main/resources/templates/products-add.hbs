@@ -1,0 +1,26 @@
+{{# partial "content"}}
+    <div class="products">
+        <!-- TODO: add data input  -->
+        <h1>Add a Product</h1>
+        <div class="card-container">
+            <div class="add">
+                <div class="card-detail">
+                    <label for="ProductNameInput">Product Name:</label>
+                    <input id="ProductNameInput">
+                </div>
+                <div class="card-detail">
+                    <label for="ProductCostInput">Product Cost:</label>
+                    <input id="ProductCostInput">
+                </div>
+                <div class="card-detail">
+                    <label for="ProductVatInput">Product VAT Rate:</label>
+                    <input id="ProductVatInput">
+                </div>
+
+                <button>CREATE</button>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

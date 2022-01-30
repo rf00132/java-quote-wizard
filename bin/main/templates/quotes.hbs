@@ -1,0 +1,28 @@
+{{# partial "content"}}
+    <div class="quotes">
+        <h1>Current Quotes</h1>
+        <!--TODO: add foreach loop to display all items-->
+        <div class="card-container">
+            <div class="card">
+                <h3>Quote Name</h3>
+                <div class="card-detail">
+                    <p>Total Price: </p>
+                    <p id="quotePriceDisplay">£10</p>
+                </div>
+                <div class="card-detail">
+                    <p>Num. of Items: </p>
+                    <p id="quoteItemAmountDisplay">2</p>
+                </div>
+                <div class="card-detail">
+                    <p>Contact: </p>
+                    <p id="quoteContactDisplay">joebloggs@bloggsoft.com</p>
+                </div>
+                <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
+
+            </div>
+        </div>
+        <a class="btn-add" href="/quotes-add"><i class="fas fa-plus"></i></a>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

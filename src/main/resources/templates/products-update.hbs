@@ -1,0 +1,40 @@
+{{# partial "content"}}
+    <div class="products">
+        <h1>{{ productName }}</h1>
+        <div class="card-container">
+            <div class="card">
+                <div>
+                    <!-- TODO: add image display for product -->
+                </div>
+                <div class="card-detail">
+                    <h3>Cost: </h3>
+                    <h3>£{{ productPrice }}</h3>
+                </div>
+                <div class="card-detail">
+                    <h3>With VAT: </h3>
+                    <h3>{{ grandTotal }}</h3>
+                </div>
+            </div>
+
+            <div class="update">
+                <div class="card-detail">
+                    <label for="productNameInput">Update Name:</label>
+                    <input id="productNameInput">
+                </div>
+                <div class="card-detail">
+                    <label for="productCostInput">Update Price:</label>
+                    <input id="productCostInput">
+                </div>
+                <div class="card-detail">
+                    <label for="productVatRateInput">Update VAT Rate:</label>
+                    <input id="productVatRateInput">
+                </div>
+                <button>UPDATE</button>
+            </div>
+        </div>
+        <!-- TODO: on click change from fa-pen to fa-check (or tick equivalent) also have the update box appear -->
+        <span id="editItem" class="btn-edit"><i class="fas fa-pen"></i></span>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

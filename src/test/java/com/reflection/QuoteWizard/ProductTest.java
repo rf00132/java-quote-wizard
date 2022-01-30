@@ -1,12 +1,6 @@
-package test.java.com.reflection.QuoteWizard;
-import main.java.com.reflection.QuoteWizard.Product;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Vector;
-
-import static org.junit.Assert.assertTrue;
+package com.reflection.QuoteWizard;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 public class ProductTest {
 
@@ -14,27 +8,27 @@ public class ProductTest {
 
     @Before
     public void setUp() {
-        testProduct = new Product();
+        testProduct = new Product(0);
     }
 
     @Test
     public void setNameTest(){
         testProduct.setName("Cloth");
-        assertTrue(testProduct.getName().equals("Cloth"));
+        assertEquals("Cloth", testProduct.getName());
     }
 
     @Test
     public void setPriceTest(){
         testProduct.setPrice(12.32);
-        assertTrue(testProduct.getPrice() == 12.32);
+        assertEquals(12.32, testProduct.getPrice(), 0.0);
     }
 
     @Test
     public void setDimensions(){
         double[] dimsToReplace = new double[]{1,2,3};
         testProduct.setDimensions(dimsToReplace);
-        double[] dimsRecBack = testProduct.getDimensions();
-        assertTrue(dimsRecBack[0] == 1 && dimsRecBack[1] == 2 && dimsRecBack[2] == 3);
+        double[] dimensionsReturned = testProduct.getDimensions();
+        assertTrue(dimensionsReturned[0] == 1 && dimensionsReturned[1] == 2 && dimensionsReturned[2] == 3);
     }
 
 

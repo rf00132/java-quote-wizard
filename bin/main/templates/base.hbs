@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="https://kit.fontawesome.com/352c99e409.js" crossorigin="anonymous"></script>
+        <title>{{#block "title"}}Quote Wizard{{/block}}</title>
+    </head>
+    <body>
+        <div id="container">
+            <header class="header">
+                {{#block "header"}}
+                        <a href="/">Quote Wizard</a>
+                        <a href="/quotes">Quotes</a>
+                        <a href="/products">Products</a>
+                {{/block}}
+            </header>
+            <div class="content">
+                {{#block "content"}}
+
+                    <h1>Quote Wizard</h1>
+                    <div>
+                        <a href="/quotes">Quotes</a>
+                        <a href="/products">Products</a>
+                    </div>
+                {{/block}}
+            </div>
+
+
+            <footer class="footer">
+                {{#block "footer"}}
+                        <a href="header">Back to Top</a>
+                {{/block}}
+            </footer>
+
+        </div>
+    </body>
+</html>

@@ -1,9 +1,9 @@
-package main.java.com.reflection.QuoteWizard;
+package com.reflection.QuoteWizard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quote {
+public class Quote{
     private int quoteId;
     public int getId(){ return quoteId; }
 
@@ -11,9 +11,9 @@ public class Quote {
     public String getName() { return quoteName; }
     public void setName(String newName){ quoteName = newName; }
 
-    private Contact quoteContact;
-    public Contact getContact(){ return quoteContact; }
-    public void setContact(Contact newContact){ quoteContact = newContact; }
+    private String quoteContact;
+    public String getContact(){ return quoteContact; }
+    public void setContact(String newContact){ quoteContact = newContact; }
 
     private List<QuoteItem> basket;
     public List<QuoteItem> getBasket(){ return basket; }
@@ -24,17 +24,24 @@ public class Quote {
     private double basketVatTotal;
     public double getBasketVatTotal() { return basketVatTotal; }
 
+    private int amountInBasket;
+    public int getAmountInBasket(){ return amountInBasket; }
+
+
     public void UpdateProductTotals(){
         double newTotal = 0;
         double newVatTotal = 0;
+        int newAmount = 0;
 
         for(QuoteItem item : basket){
             newTotal += item.getTotal();
             newVatTotal += item.getVatTotal();
+            newAmount += item.getProductAmount();
         }
 
         basketTotal = newTotal;
         basketVatTotal = newVatTotal;
+        amountInBasket = newAmount;
     }
 
     public void AddToBasket(QuoteItem itemToAdd){
@@ -51,11 +58,9 @@ public class Quote {
         else basketVatTotal = 0;
     }
 
-    public Quote(){
-        quoteId = IdManager.GetNextQuoteId();
+    public Quote(int id){
+        quoteId = id;
         quoteName = "Quote " + quoteId;
         basket = new ArrayList<>();
     }
-
-    //TODO: add total price things e.g. total price and total price no vat
 }
