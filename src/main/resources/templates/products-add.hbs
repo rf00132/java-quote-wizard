@@ -1,24 +1,25 @@
+{{# partial "title"}}Add Product{{/partial}}
+
 {{# partial "content"}}
     <div class="products">
-        <!-- TODO: add data input  -->
         <h1>Add a Product</h1>
         <div class="card-container">
-            <div class="add">
+            <form method="post" action="/products-add" class="add">
                 <div class="card-detail">
-                    <label for="ProductNameInput">Product Name:</label>
-                    <input id="ProductNameInput">
+                    <label for="productNameInput">Product Name:</label>
+                    <input id="productNameInput" name="productNameInput">
                 </div>
                 <div class="card-detail">
-                    <label for="ProductCostInput">Product Cost:</label>
-                    <input id="ProductCostInput">
+                    <label for="productCostInput">Product Cost:</label>
+                    <input id="productCostInput" name="productCostInput">
                 </div>
                 <div class="card-detail">
-                    <label for="ProductVatInput">Product VAT Rate:</label>
-                    <input id="ProductVatInput">
+                    <label for="productVatInput">Product VAT Rate:</label>
+                    <input id="productVatInput" name="productVatInput">
                 </div>
 
-                <button>CREATE</button>
-            </div>
+                <button type="submit">CREATE</button>
+            </form>
         </div>
     </div>
 {{/partial}}

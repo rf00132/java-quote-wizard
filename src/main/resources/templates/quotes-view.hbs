@@ -1,0 +1,58 @@
+{{#partial "title"}}{{this.selectedQuote.quoteName}}{{/partial}}
+
+{{# partial "content"}}
+    <div class="quotes">
+        <h1>{{this.selectedQuote.quoteName}}</h1>
+        <div class="card-container">
+            <div class="card">
+                <div class="card-detail">
+                    <h3>Total: </h3>
+                    <h3>£{{this.selectedQuote.basketTotal}}</h3>
+                </div>
+                <div class="card-detail">
+                    <h3>Grand Total: </h3>
+                    <h3>£{{this.selectedQuote.basketVatTotal}}</h3>
+                </div>
+                <div class="card-detail">
+                    <h3>Total Num. of Items: </h3>
+                    <h3>{{this.selectedQuote.amountInBasket}}</h3>
+                </div>
+                <a href="quotes-update" class="btn-edit-card updateButton"><i class="fas fa-pen updateIcon"></i></a>
+            </div>
+
+            {{#each this.selectedQuote.basket}}
+                <div class="card">
+                    <h3>{{this.name}}</h3>
+                    <div>
+                        <div class="card-detail">
+                            <p>Total Num. of Items: </p>
+                            <p>{{this.productAmount}}</p>
+                        </div>
+                        <div class="card-detail">
+                            <p>Total: </p>
+                            <p id="productTotalDisplay">£{{this.total}}</p>
+                        </div>
+                        <div class="card-detail">
+                            <h3>Total + VAT: </h3>
+                            <h3 id="productTotalVatDisplay">£{{this.vatTotal}}</h3>
+                        </div>
+                    </div>
+                    <div class="card-detail">
+                        <div class="btn-increment">
+                            <form method="post" action="/quotes-subtract-one">
+                                <button value="{{this.id}}" name="updateAmount"><i class="fas fa-minus"></i></button>
+                            </form>
+                            <p>{{this.productAmount}}</p>
+                            <form method="post" action="/quotes-add-one">
+                                <button value="{{this.id}}" name="updateAmount"><i class="fas fa-plus"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <a class="btn-add" href="/products-quote"><i class="fas fa-plus"></i></a>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

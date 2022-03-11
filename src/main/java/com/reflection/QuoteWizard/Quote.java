@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.BASKETS;
 import static java.math.BigDecimal.ZERO;
+import static java.math.RoundingMode.HALF_UP;
 
 public class Quote{
-    private int quoteId;
+    private final int quoteId;
     private String quoteName;
     private String quoteContact;
     private List<QuoteItem> basket;
@@ -17,7 +19,8 @@ public class Quote{
 
     public Quote(int id){
         quoteId = id;
-        quoteName = "Quote " + quoteId;
+        quoteName = "Quote " + (quoteId);
+        quoteContact = "";
         basket = new ArrayList<>();
         basketTotal = ZERO;
         basketVatTotal = ZERO;
@@ -27,13 +30,14 @@ public class Quote{
         return quoteId;
     }
 
-    public String getName() {
+    public String getQuoteName() {
         return quoteName;
     }
 
     public String getContact(){
         return quoteContact;
     }
+
     public List<QuoteItem> getBasket(){
         return basket;
     }
@@ -62,14 +66,15 @@ public class Quote{
         basket = newBasket;
     }
 
-    private void UpdateProductTotals(){
+    public void updateProductTotals() {
         BigDecimal newTotal = ZERO;
         BigDecimal newVatTotal = ZERO;
         int newAmount = 0;
 
-        for(QuoteItem item : basket){
-            newTotal = newTotal.add(item.getTotal());
-            newVatTotal = newVatTotal.add(item.getVatTotal());
+        for(int i = 0; i < basket.size(); i++) {
+            QuoteItem item = basket.get(i);
+            newTotal = newTotal.add(item.getTotal()).setScale(2, HALF_UP);
+            newVatTotal = newVatTotal.add(item.getVatTotal()).setScale(2, HALF_UP);
             newAmount += item.getProductAmount();
         }
 
@@ -78,28 +83,54 @@ public class Quote{
         amountInBasket = newAmount;
     }
 
-    public void AddToBasket(QuoteItem itemToAdd){
+    public void addToBasket(QuoteItem itemToAdd) {
         basket.add(itemToAdd);
-        basketTotal = basketTotal.add(itemToAdd.getTotal());
-        basketVatTotal = basketVatTotal.add(itemToAdd.getVatTotal());
+        updateProductTotals();
     }
 
-    public void DeleteFromBasket(QuoteItem itemToDelete){
+    public void DeleteFromBasket(QuoteItem itemToDelete) {
         basket.remove(itemToDelete);
-        if(basketTotal.doubleValue() - itemToDelete.getTotal().doubleValue() > 0) {
-            basketTotal = basketTotal.subtract(itemToDelete.getTotal());
-        }
-        else {
+        if (basketTotal.compareTo(itemToDelete.getTotal()) > 0) {
+            basketTotal = basketTotal.subtract(itemToDelete.getTotal()).setScale(2, HALF_UP);
+        } else {
             basketTotal = ZERO;
         }
 
-        if(basketVatTotal.doubleValue() - itemToDelete.getTotal().doubleValue() > 0) {
-            basketVatTotal = basketVatTotal.subtract(itemToDelete.getVatTotal());
-        }
-        else{
+        if (basketVatTotal.compareTo(itemToDelete.getTotal()) > 0) {
+            basketVatTotal = basketVatTotal.subtract(itemToDelete.getVatTotal()).setScale(2, HALF_UP);
+        } else {
             basketVatTotal = ZERO;
         }
     }
 
+    //returns true if product is in the basket
+    public boolean isProductInBasket(Product searchProduct){
+        for(QuoteItem item : basket){
+            if(item.getProduct() == searchProduct){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public void refreshBasket(){
+        basket.clear();
+        for (QuoteItem item : BASKETS.getList()){
+            if(item.getQuote().getId() == quoteId){
+                addToBasket(item);
+            }
+        }
+        updateProductTotals();
+    }
+
+    public QuoteItem getItemFromBasket(int id){
+        for(QuoteItem item : basket){
+            if(item.getId() == id){
+                return item;
+            }
+        }
+
+        System.out.println("no item found with that id");
+        return null;
+    }
 }

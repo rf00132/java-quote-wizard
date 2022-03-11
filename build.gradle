@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'
     id 'eclipse'
 }
 
@@ -13,10 +14,17 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:1.7.33'
     implementation "com.sparkjava:spark-core:2.9.3"
     implementation "com.sparkjava:spark-template-handlebars:2.7.1"
+
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
     implementation 'org.sql2o:sql2o:1.6.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+jar {
+    archiveBaseName = 'quote-wizard'
+    archiveVersion =  '0.1.0'
 }
 
 test {

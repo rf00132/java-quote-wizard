@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static java.math.RoundingMode.HALF_UP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Product")
@@ -28,7 +29,7 @@ class ProductTest {
     @Test
     void setPriceTest(){
         testProduct.setPrice(new BigDecimal(12.32));
-        assertEquals(new BigDecimal(12.32), testProduct.getPrice());
+        assertEquals(new BigDecimal(12.32).setScale(2, HALF_UP), testProduct.getProductPrice());
     }
 
 

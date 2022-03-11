@@ -1,152 +1,361 @@
 package com.reflection.QuoteWizard;
 import spark.ModelAndView;
+
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
+
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
 
-
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.*;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 import static spark.Spark.*;
 
 public class Main {
-    static final QuoteManager QUOTES = new QuoteManager();
-    static final ProductManager PRODUCTS = new ProductManager();
-    static final BasketManager BASKETS = new BasketManager();
+    static final HandlebarsModelHandler HBMH = new HandlebarsModelHandler();
+
     public static void main(String[] args) {
-        //TODO: look into post methods.
-
-
-        generateTestData();
         staticFileLocation("/public/");
-
 
        //Home page
        get("/", (req, res) -> {
            return new ModelAndView(null, "index.hbs");
        }, new HandlebarsTemplateEngine());
 
-       quotePages();
-       productPages();
+       quotePageGets();
+       productPageGets();
+
+       quotePagePosts();
+       productPagePosts();
     }
 
-    private static void quotePages(){
+    private static void quotePageGets(){
 
         get("/quotes", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("quotes", QUOTES.getList());
-            return new ModelAndView(model, "quotes.hbs");
+            return new ModelAndView(HBMH, "quotes.hbs");
         }, new HandlebarsTemplateEngine());
-
 
         get("/quotes-add", (req, res) -> {
-            return new ModelAndView(null, "quotes-add.hbs");
+            return new ModelAndView(HBMH, "quotes-add.hbs");
         }, new HandlebarsTemplateEngine());
 
-        get("/quotes-update", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("selected-quote", QUOTES.getSelectedQuote());
-            model.put("selected-basket", QUOTES.getSelectedQuote().getBasket());
-            return new ModelAndView(model, "quotes-update.hbs");
+        get("/quotes-delete", (req, res) -> {
+            return new ModelAndView(HBMH, "quotes-delete.hbs");
         }, new HandlebarsTemplateEngine());
 
         //TODO: quotes send page
         get("/quotes-send", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("selected-quote", QUOTES.getSelectedQuote());
-            return new ModelAndView(model, "quotes-send.hbs");
+            return new ModelAndView(HBMH, "quotes-send.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/quotes-update", (req, res) -> {
+            return new ModelAndView(HBMH, "quotes-update.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/quotes-view", (req, res) -> {
+            return new ModelAndView(HBMH, "quotes-view.hbs");
         }, new HandlebarsTemplateEngine());
     }
 
-    private static void productPages(){
+    private static void quotePagePosts(){
+        post("/quotes-add", (req, res) -> {
+            try{
+                Quote newQuote = new Quote(HBMH.getNextQuoteId());
+                if(req.queryParams("quoteNameInput") != null){
+                    newQuote.setName(req.queryParams("quoteNameInput"));
+                }
+                if(req.queryParams("quoteContactInput") != null){
+                    newQuote.setContact(req.queryParams("quoteContactInput"));
+                }
+                QUOTES.addItem(newQuote);
+                HBMH.setSelectedQuote(QUOTES.searchForQuote(newQuote.getId()));
+                res.redirect("/products-quote");
+            } catch (Exception e) {
+                System.out.println("Error adding Quote: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-add-product", (req, res) -> {
+            try{
+                Product productToAdd = HBMH.getProducts().get(parseInt(req.queryParams("addToQuote")));
+
+                boolean alreadyInBasket = false;
+
+                for(QuoteItem item : HBMH.getSelectedQuote().getBasket()){
+                    if(item.getProduct().getId() == productToAdd.getId()){
+                        alreadyInBasket = true;
+                        break;
+                    }
+                }
+                if(!alreadyInBasket){
+                    QuoteItem newItem = new QuoteItem(
+                            HBMH.getNextBasketId(),
+                            productToAdd.getId() ,
+                            HBMH.getSelectedQuote().getId()
+                    );
+                    HBMH.getSelectedQuote().addToBasket(newItem);
+                    HBMH.BASKETS.addItem(newItem);
+                    res.redirect("/products-quote");
+                }
+                else{
+                    res.redirect("/quotes-view");
+
+                }
+
+
+
+            } catch (Exception e) {
+                System.out.println("Error adding Product to Quote: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-delete", (req, res) -> {
+            try{
+                int quoteId = parseInt(req.queryParams("deleteBtn"));
+                HBMH.setSelectedQuote(HBMH.getQuotes().get(quoteId));
+                res.redirect("/quotes-delete");
+            } catch (Exception e) {
+                System.out.println("Error selecting Quote to delete: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-delete-confirm", (req, res) -> {
+            try{
+                QUOTES.deleteItem(HBMH.getSelectedQuote());
+                res.redirect("/quotes");
+            } catch (Exception e) {
+                System.out.println("Error deleting Quote: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-delete-deny", (req, res) -> {
+            try{
+                res.redirect("/quotes");
+            } catch (Exception e) {
+                System.out.println("Error redirecting to quotes page: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-edit", (req, res) -> {
+            try{
+                int productId = parseInt(req.queryParams("editBtn"));
+                HBMH.setSelectedQuote(HBMH.getQuotes().get(productId));
+                res.redirect("/quotes-update");
+            } catch (Exception e) {
+                System.out.println("Error selecting Quote to edit: " + e);
+            }
+            return null;
+        });
+
+        post("/quotes-update", (req, res) -> {
+            try{
+                Quote quoteToEdit = QUOTES.searchForQuote(HBMH.getSelectedQuote().getId());
+                String newName = req.queryParams("quoteNameInput");
+                String newContact = req.queryParams("quoteContactInput");
+
+                if(!quoteToEdit.getQuoteName().equals(newName) && newName != null){
+                    QUOTES.searchForQuote(quoteToEdit.getId()).setName(newName);
+                }
+
+                System.out.println(HBMH.getSelectedQuote().getQuoteName());
+                if(!quoteToEdit.getContact().equals(newContact) && newContact != null){
+                    QUOTES.searchForQuote(quoteToEdit.getId()).setContact(newContact);
+                }
+
+                res.redirect("/quotes-view");
+            } catch (Exception e) {
+                System.out.println("Error updating Quote: " + e);
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
+
+        post("/quotes-add-one", (req, res) -> {
+            try{
+                Quote quoteToUpdate = HBMH.getSelectedQuote();
+                QuoteItem itemToUpdate = quoteToUpdate.getItemFromBasket(parseInt(req.queryParams("updateAmount")));
+                itemToUpdate.incrementProductAmount(1);
+
+                QUOTES.updateItem(quoteToUpdate);
+
+                res.redirect("/quotes-view");
+            } catch (Exception e) {
+                System.out.println("Error adding to basket item: " + e);
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
+
+        post("/quotes-subtract-one", (req, res) -> {
+            try{
+                Quote quoteToUpdate = HBMH.getSelectedQuote();
+                QuoteItem itemToUpdate = quoteToUpdate.getItemFromBasket(parseInt(req.queryParams("updateAmount")));
+                itemToUpdate.incrementProductAmount(-1);
+
+                QUOTES.updateItem(quoteToUpdate);
+
+                res.redirect("/quotes-view");
+            } catch (Exception e) {
+                System.out.println("Error subtracting from basket item: " + e);
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
+
+        post("/quotes-view", (req, res) -> {
+           try{
+               HBMH.setSelectedQuote(
+                   HBMH.getQuotes()
+                   .get(parseInt(req.queryParams("viewBtn")))
+               );
+               res.redirect("/quotes-view");
+           } catch (Exception e) {
+               System.out.println("Error viewing quote: " + e);
+               throw new RuntimeException(e);
+           }
+            return null;
+        });
+    }
+
+    private static void productPageGets(){
 
         get("/products", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("products", PRODUCTS.getList());
-            return new ModelAndView(null, "products.hbs");
+            return new ModelAndView(HBMH, "products.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/products-add", (req, res) -> {
-            return new ModelAndView(null, "products-add.hbs");
+            return new ModelAndView(HBMH, "products-add.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/products-delete", (req, res) -> {
+            return new ModelAndView(HBMH, "products-delete.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/products-quote", (req, res) -> {
+            return new ModelAndView(HBMH, "products-quote.hbs");
         }, new HandlebarsTemplateEngine());
 
         get("/products-update", (req, res) -> {
-            Map<String, Object> model = new HashMap<>();
-            model.put("selected-product", PRODUCTS.getSelectedProduct());
-            return new ModelAndView(null, "products-update.hbs");
+            return new ModelAndView(HBMH, "products-update.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/products-view", (req, res) -> {
+            return new ModelAndView(HBMH, "products-view.hbs");
         }, new HandlebarsTemplateEngine());
     }
 
-    private static void generateTestData(){
-        Product product1 = new Product(0);
-        product1.setPrice(new BigDecimal(5.99));
-        product1.setName("Brick");
-        product1.setVatRate(new BigDecimal(0.2333));
+    private static void productPagePosts(){
+        post("/products-add", (req, res) -> {
+            try{
+                Product newProduct = new Product(HBMH.getNextProductId());
 
-        Product product2 = new Product(1);
-        product2.setPrice(new BigDecimal(18.95));
-        product2.setName("4 Bricks");
-
-        Product product3 = new Product(2);
-        product3.setPrice(new BigDecimal(200.99));
-        product3.setName("Lots of Bricks");
-
-        Product product4 = new Product(3);
-        product4.setPrice(new BigDecimal(76.55));
-        product4.setName("Not quite as many Bricks");
-        product4.setVatRate(new BigDecimal(0.1588));
-
-        Quote quote1 = new Quote(0);
-        Quote quote2 = new Quote(1);
-        Quote quote3 = new Quote(2);
-
-        QuoteItem quoteItem1 = new QuoteItem(0, product1, quote1);
-        quoteItem1.incrementProductAmount(3);
-        quote1.AddToBasket(quoteItem1);
-
-        QuoteItem quoteItem2 = new QuoteItem(1, product3, quote1);
-        quoteItem2.incrementProductAmount(2);
-        quote1.AddToBasket(quoteItem2);
-
-        QuoteItem quoteItem3 = new QuoteItem(2, product2, quote2);
-        quoteItem3.incrementProductAmount(1);
-        quote1.AddToBasket(quoteItem3);
-
-        QuoteItem quoteItem4 = new QuoteItem(3, product4, quote2);
-        quoteItem4.incrementProductAmount(4);
-        quote1.AddToBasket(quoteItem4);
-
-        QuoteItem quoteItem5 = new QuoteItem(4, product1, quote3);
-        quoteItem5.incrementProductAmount(3);
-        quote1.AddToBasket(quoteItem5);
-
-        QuoteItem quoteItem6 = new QuoteItem(5, product3, quote3);
-        quoteItem6.incrementProductAmount(9);
-        quote1.AddToBasket(quoteItem6);
-
-        QuoteItem quoteItem7 = new QuoteItem(6, product4, quote3);
-        quoteItem7.incrementProductAmount(2);
-        quote1.AddToBasket(quoteItem7);
-
-        QUOTES.addItem(quote1);
-        QUOTES.addItem(quote2);
-        QUOTES.addItem(quote3);
-
-        PRODUCTS.addItem(product1);
-        PRODUCTS.addItem(product2);
-        PRODUCTS.addItem(product3);
-        PRODUCTS.addItem(product4);
-
-        BASKETS.AddItem(quoteItem1);
-        BASKETS.AddItem(quoteItem2);
-        BASKETS.AddItem(quoteItem3);
-        BASKETS.AddItem(quoteItem4);
-        BASKETS.AddItem(quoteItem5);
-        BASKETS.AddItem(quoteItem6);
-        BASKETS.AddItem(quoteItem7);
+                if(req.queryParams("productNameInput") != null){
+                    newProduct.setName(req.queryParams("productNameInput"));
+                }
+                if(req.queryParams("productCostInput") != null){
+                    newProduct.setPrice(new BigDecimal(parseDouble(req.queryParams("productCostInput"))));
+                }
+                if(req.queryParams("productVatInput") != null){
+                    newProduct.setVatRate(new BigDecimal(parseDouble(req.queryParams("productVatInput"))));
+                }
+                PRODUCTS.addItem(newProduct);
+                HBMH.setSelectedProduct(PRODUCTS.searchForProduct(newProduct.getId()));
+                res.redirect("/products-view");
+            } catch (Exception e) {
+                System.out.println("Error adding product: " + e);
+            }
+            return null;
+        });
 
 
-        QUOTES.setSelectedQuote(quote1);
-        PRODUCTS.setSelectedProduct(product1);
+        post("/products-delete", (req, res) -> {
+            try{
+                int productId = parseInt(req.queryParams("deleteBtn"));
+
+                HBMH.setSelectedProduct(PRODUCTS.getList().get(productId));
+                res.redirect("/products-delete");
+            } catch (Exception e) {
+                System.out.println("Error selecting product for deletion: " + e);
+            }
+            return null;
+        });
+
+        post("/products-delete-confirm", (req, res) -> {
+            try{
+                PRODUCTS.deleteItem(HBMH.getSelectedProduct());
+                res.redirect("/products");
+
+            } catch (Exception e) {
+                System.out.println("Error deleting product: " + e);
+            }
+            return null;
+        });
+
+        post("/products-delete-deny", (req, res) -> {
+            try{
+                res.redirect("/products");
+            } catch (Exception e) {
+                System.out.println("Error redirecting to products page: " + e);
+            }
+            return null;
+        });
+
+        post("/products-edit", (req, res) -> {
+            try{
+                int productId = parseInt(req.queryParams("editBtn"));
+                System.out.println(productId);
+                HBMH.setSelectedProduct(PRODUCTS.searchForProduct(productId));
+                res.redirect("/products-update");
+            } catch (Exception e) {
+                System.out.println("Error selecting product to edit: " + e);
+            }
+            return null;
+        });
+
+        post("/products-update", (req, res) -> {
+            try{
+                Product productToEdit = PRODUCTS.searchForProduct(HBMH.getSelectedProduct().getId());
+                String newName = req.queryParams("productNameInput");
+
+                if(newName != null && !productToEdit.getName().equals(newName)){
+                    PRODUCTS.searchForProduct(productToEdit.getId()).setName(newName);
+                }
+
+                if(req.queryParams("productPriceInput") != null){
+                    PRODUCTS.searchForProduct(productToEdit.getId()).setPrice(new BigDecimal(parseDouble(req.queryParams("productPriceInput"))));
+                }
+
+                if(req.queryParams("productVatInput") != null){
+                    PRODUCTS.searchForProduct(productToEdit.getId()).setVatRate(new BigDecimal(parseDouble(req.queryParams("productVatInput"))));
+                }
+
+                res.redirect("/products-view");
+            } catch (Exception e) {
+                System.out.println("Error updating product: " + e);
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
+
+        post("/products-view", (req, res) -> {
+            try{
+                HBMH.setSelectedProduct(
+                        HBMH.getProducts()
+                                .get(parseInt(req.queryParams("viewBtn")))
+                );
+                res.redirect("/products-view");
+            } catch (Exception e) {
+                System.out.println("Error viewing product: " + e);
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
     }
+
 }

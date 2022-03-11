@@ -1,37 +1,46 @@
+{{# partial "title"}}{{# block "newtitle"}}Products{{/block}}{{/partial}}
+
 {{# partial "content"}}
     <div class="products">
         <h1>Current Products</h1>
 
         <div class="card-container">
-            <!--TODO: add foreach loop to display all items-->
-            {{#each products}}
+            {{#block "deleteWarning"}}{{/block}}
+
+            {{#each this.products}}
             <div class="card">
-                <h3>{{ productName }}</h3>
+                <h3>{{ this.name }}</h3>
                 <div>
-                    <div>
-                        <!-- TODO: add image display for product -->
+                    <div class="card-detail">
+                        <p>Total: </p>
+                        <p id="productTotalDisplay">£{{ this.productPrice }}</p>
                     </div>
-                    <div>
-                        <div class="card-detail">
-                            <p>Total: </p>
-                            <p id="productTotalDisplay">£{{ productPrice }}</p>
-                        </div>
-                        <div class="card-detail">
-                            <p>VAT: </p>
-                            <p id="productVatDisplay">£{{ vatCost }}</p>
-                        </div>
-                        <div class="card-detail">
-                            <p>Total + VAT: </p>
-                            <p id="productTotalVatDisplay">£{{ grandTotal }}</p>
-                        </div>
-                        <span class="btn-add-card"><i class="fas fa-plus"></i></span>
-                        <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
+                    <div class="card-detail">
+                        <p>VAT: </p>
+                        <p id="productVatDisplay">£{{ this.vatCost }}</p>
                     </div>
+                    <div class="card-detail">
+                        <p>Total + VAT: </p>
+                        <p id="productTotalVatDisplay">£{{ this.grandTotal }}</p>
+                    </div>
+                    {{#block "cardButton"}}
+                        <form method="post" action="/products-edit">
+                            <button class="btn-edit-card" name="editBtn" value="{{this.id}}"><i class="fas fa-pen"></i></button>
+                        </form>
+                    {{/block}}
+                    <form method="post" action="/products-delete">
+                        <button class="btn-delete" name="deleteBtn" value="{{this.id}}"><i class="fas fa-trash"></i></button>
+                    </form>
+                    <form method="post" action="/products-view">
+                        <button class="btn-view" name="viewBtn" value="{{this.id}}"><i class="fas fa-folder-open"></i></button>
+                    </form>
                 </div>
-            {{/each}}
             </div>
+            {{/each}}
         </div>
-        <a class="btn-add" href="/products-add"><i class="fas fa-plus"></i></a>
+        {{#block "cornerFloatingButton"}}
+            <a class="btn-add" href="/products-add"><i class="fas fa-plus"></i></a>
+        {{/block}}
     </div>
 {{/partial}}
 

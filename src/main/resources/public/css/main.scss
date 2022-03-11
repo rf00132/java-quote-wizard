@@ -17,6 +17,7 @@ body{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background: $secondary-background-colour;
     text-align: center;
+    min-width: 250px;
 }
 
 a{
@@ -31,6 +32,7 @@ input, label{
     padding: 5px;
     border: none;
     border-radius: 5px;
+    min-width: 50px;
 }
 
 .btn-add,
@@ -50,19 +52,36 @@ input, label{
     }
 }
 
-.btn-add, .btn-add-card{
+
+.btn-deny{
+    padding: 8.5px 11.5px;
+}
+
+.btn-add, 
+.btn-add-card, 
+.btn-delete{
     padding: 8.5px 11px;
 }
 
-.btn-edit, .btn-edit-card{
+.btn-edit, 
+.btn-edit-card,
+.btn-view,
+.btn-confirm {
     padding: 8.5px 10px;
 }
 
+.btn-view{
+    padding: 8.5px;
+}
 
 .btn-edit-card, 
-.btn-add-card{
+.btn-add-card, 
+.btn-delete, 
+.btn-view,
+.btn-confirm,
+.btn-deny{
     position: absolute;
-    top: 15px;
+    
     background: $primary-text-colour;
     color: $primary-background-colour;
     border-radius: 50%;
@@ -72,13 +91,31 @@ input, label{
     }
 }
 
-.btn-edit-card{
+.btn-add-card,
+.btn-edit-card, 
+.btn-view,
+.btn-confirm{
     right: 15px;
 }
-.btn-add-card{
+
+ 
+.btn-delete,
+.btn-deny{
     left: 15px;
 }
 
+
+.btn-add-card, 
+.btn-delete,
+.btn-edit-card{
+    top: 15px;
+}
+
+.btn-view,
+.btn-confirm,
+.btn-deny{
+    bottom: 15px;
+}
 
 .header{
     
@@ -106,6 +143,14 @@ input, label{
     position: fixed;
     bottom: 15px;
     width: 100%;
+    a{
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        color: white;
+        &:hover{
+            text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+            color: black;
+        }
+    }
 }
 
 .index{
@@ -123,6 +168,8 @@ input, label{
     a{
         padding: 10px;
         border: 2px solid $secondary-text-colour;
+        border-radius: 5px;
+        background: $primary-background-colour;
         width: 120px;
         margin: 5px auto;
     }
@@ -134,9 +181,11 @@ input, label{
     max-width: 400px;
     margin: 0 auto;
     
-    .card, .update, .add{
+    .card, .update, .add, .delete{
+        border: 2px solid $secondary-text-colour;
+        border-radius: 5px;
         position: relative;
-        min-width: 150px;
+        min-width: 200px;
         width: 350px;
         margin: 40px auto;
         color: $primary-text-colour;
@@ -157,19 +206,21 @@ input, label{
         }
     
         &:hover{
+            border-color: $primary-background-colour;
             color: $primary-background-colour;
             background: $primary-text-colour;
             a{
                 color: $primary-background-colour;
             }
             
-            input{
-                background: $secondary-background-colour;
-                color: $primary-text-colour
-            }
+            .card-detail{
+                input{
+                    background: $secondary-background-colour;
+                    color: $primary-text-colour
+                }
+            } 
 
             button{
-              
                 &:hover{
                
                     color: $primary-text-colour;
@@ -185,11 +236,11 @@ input, label{
         }
     }
 
-    .update, .add{      
-        .card-detail{
-            justify-content: space-between;
-        }
-
+    .delete{
+        padding-bottom: 40px;
+    }
+ 
+    .add{      
         button{
             background: $primary-text-colour;
             color: $primary-background-colour;
@@ -201,8 +252,14 @@ input, label{
         }
     }
 
+    .add, .update{
+        .card-detail{
+            justify-content: space-between;
+        }
+    }
+
     .update{
-        display: none;
+        padding-top: 50px;
     }
 }
 

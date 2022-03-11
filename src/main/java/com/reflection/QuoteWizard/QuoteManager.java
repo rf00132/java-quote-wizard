@@ -1,17 +1,15 @@
 package com.reflection.QuoteWizard;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.DBMANAGER;
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.QUOTES;
+
 public class QuoteManager{
-    private DatabaseManager dm;
     private List<Quote> quotes = new ArrayList<>();
     private Quote selectedQuote;
 
-    public QuoteManager(){
-        dm = new DatabaseManager();
-    }
 
     public List<Quote> getList(){
         return quotes;
@@ -21,8 +19,9 @@ public class QuoteManager{
         return selectedQuote;
     }
 
-    public void InitialiseList(List currentData){
+    public void initialiseList(List<Quote> currentData){
         quotes = currentData;
+
     }
 
     public void setSelectedQuote( Quote newSelection) {
@@ -31,29 +30,49 @@ public class QuoteManager{
 
     public void addItem(Quote itemToAdd) {
         quotes.add(itemToAdd);
-        //dm.InsertIntoQuoteDatabase(itemToAdd);
+        DBMANAGER.insertIntoQuoteDatabase(itemToAdd);
     }
 
-    public void DeleteItem(Quote itemToDelete) {
+    public void deleteItem(Quote itemToDelete) {
         quotes.remove(itemToDelete);
-        //dm.DeleteFromDatabase(0, "idQuote", "" + itemToDelete.getId());
+        for(QuoteItem item : itemToDelete.getBasket()){
+            DBMANAGER.deleteFromDatabase(2, 0, item.getId());
+        }
+        DBMANAGER.deleteFromDatabase(0, 0, itemToDelete.getId());
+
     }
 
-    public void UpdateItem(Quote updatedItem) {
-        if(updatedItem.getName() != quotes.get(updatedItem.getId()).getName()){
-            //dm.UpdateDatabase(1, "quoteName", updatedItem.getId(), updatedItem.getName());
-            quotes.get(updatedItem.getId()).setName(updatedItem.getName());
+    public void updateItem(Quote updatedItem) {
+        Quote originalQuote = null;
+        for(Quote quote : DBMANAGER.getQuoteResults()){
+            if(quote.getId() == updatedItem.getId()){
+                originalQuote = quote;
+                break;
+            }
         }
-        if(updatedItem.getContact() != quotes.get(updatedItem.getId()).getContact()){
-           // dm.UpdateDatabase(1, "quoteContact", updatedItem.getId(), updatedItem.getContact());
-            quotes.get(updatedItem.getId()).setContact(updatedItem.getContact());
+        Quote quoteToUpdate = QUOTES.searchForQuote(updatedItem.getId());
+        if(!updatedItem.getQuoteName().equals(originalQuote.getQuoteName())){
+            DBMANAGER.updateDatabase(0, 1, updatedItem.getId(), updatedItem.getQuoteName());
+            quoteToUpdate.setName(updatedItem.getQuoteName());
         }
-        if(updatedItem.getBasket() != quotes.get(updatedItem.getId()).getBasket()){
-            quotes.get(updatedItem.getId()).setBasket(updatedItem.getBasket());
+        if(!updatedItem.getContact().equals(originalQuote.getContact())){
+           DBMANAGER.updateDatabase(0, 2, updatedItem.getId(), updatedItem.getContact());
+           quoteToUpdate.setContact(updatedItem.getContact());
         }
+
+        DBMANAGER.refreshAllSearchResults();
+        DBMANAGER.setSearchResults();
     }
 
-    public Quote SearchForItem(int searchId) {
-        return quotes.get(searchId);
+    public Quote searchForQuote(int id) {
+        for(int i = 0; i < quotes.size(); i++){
+            if (quotes.get(i).getId() == id){
+                return quotes.get(i);
+            }
+        }
+
+        System.out.println("no item with that id found");
+        return null;
     }
+
 }

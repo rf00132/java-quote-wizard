@@ -1,46 +1,70 @@
 package com.reflection.QuoteWizard;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.DBMANAGER;
+import static com.reflection.QuoteWizard.HandlebarsModelHandler.QUOTES;
+import static com.reflection.QuoteWizard.Main.HBMH;
+
 public class BasketManager {
-    private DatabaseManager dm;
     private static List<QuoteItem> quoteItems = new ArrayList<>();
-
-    public BasketManager(){
-        dm = new DatabaseManager();
-    }
-
-    public static List<QuoteItem> getList(){
+    public List<QuoteItem> getList(){
         return quoteItems;
     }
 
-    public static void InitialiseList(List currentData){
+
+    public void initialiseList(List<QuoteItem> currentData){
         quoteItems = currentData;
     }
 
-    public void AddItem(QuoteItem itemToAdd) {
+    public void addItem(QuoteItem itemToAdd) {
         quoteItems.add(itemToAdd);
-        //dm.InsertIntoQuoteProductDatabase(itemToAdd);
+        DBMANAGER.insertIntoQuoteProductDatabase(itemToAdd);
     }
 
-    public void DeleteItem(QuoteItem itemToDelete) {
+    public void deleteItem(QuoteItem itemToDelete) {
+
+        DBMANAGER.deleteFromDatabase(2, 0, itemToDelete.getId());
+        itemToDelete.getQuote().getBasket().remove(itemToDelete);
         quoteItems.remove(itemToDelete);
-        //dm.DeleteFromDatabase(2, "idQuoteProduct", "" + itemToDelete.getId());
+        HBMH.setSelectedQuote(itemToDelete.getQuote());
     }
 
-    public void UpdateItem(QuoteItem updatedItem) {
-        if(updatedItem.getProductAmount() != quoteItems.get(updatedItem.getId()).getProductAmount()){
-            //dm.UpdateDatabase(2, "amountInBasket", updatedItem.getId(), updatedItem.getProductAmount() + "");
-            int currentAmount = quoteItems.get(updatedItem.getId()).getProductAmount();
-            quoteItems.get(updatedItem.getId()).incrementProductAmount(updatedItem.getProductAmount() - currentAmount);
+    public void updateItem(QuoteItem updatedItem) {
+        QuoteItem originalBasketItem = null;
+
+        for(QuoteItem item : DBMANAGER.getBasketResults()){
+            if(item.getId() == updatedItem.getId()){
+                originalBasketItem = item;
+                break;
+            }
+        }
+        if(originalBasketItem == null) {
+            return;
         }
 
+        DBMANAGER.updateDatabase(2, 3, updatedItem.getId(), updatedItem.getProductAmount() + "");
+
+        DBMANAGER.refreshAllSearchResults();
+        DBMANAGER.setSearchResults();
     }
 
-    public QuoteItem SearchForItem(int searchId) {
-        return quoteItems.get(searchId);
+    public QuoteItem searchForItem(int id) {
+        QuoteItem itemToReturn;
+        for(int i = 0; i < quoteItems.size(); i++){
+            if (quoteItems.get(i).getId() == id){
+                return quoteItems.get(i);
+            }
+        }
+
+        System.out.println("no item with that id found");
+        return null;
     }
+
+
+
 
 
 }

@@ -1,25 +1,35 @@
-{{# partial "title"}}Quotes{{/partial}}
+{{#partial "title"}}{{# block "newtitle"}}Quotes{{/block}}{{/partial}}
 
-{{# partial "content"}}
+{{#partial "content"}}
     <div class="quotes">
         <h1>Current Quotes</h1>
         <div class="card-container">
-            {{#each "quotes"}}
+            {{#block "deleteWarning"}}{{/block}}
+
+            {{#each this.quotes}}
                 <div class="card">
-                    <h3>{{ quoteName }}</h3>
+                    <h3>{{ this.quoteName }}</h3>
                     <div class="card-detail">
                         <p>Total Price: </p>
-                        <p id="quotePriceDisplay">{{ basketTotal }}</p>
+                        <p id="quotePriceDisplay">£{{ this.basketVatTotal }}</p>
                     </div>
                     <div class="card-detail">
                         <p>Num. of Items: </p>
-                        <p id="quoteItemAmountDisplay"> {{ amountInBasket }}</p>
+                        <p id="quoteItemAmountDisplay">{{ this.amountInBasket }}</p>
                     </div>
                     <div class="card-detail">
                         <p>Contact: </p>
-                        <p id="quoteContactDisplay">{{ quoteContact }}</p>
+                        <p id="quoteContactDisplay">{{ this.contact }}</p>
                     </div>
-                    <span class="btn-edit-card"><i class="fas fa-pen"></i></span>
+                    <form method="post" action="/quotes-edit">
+                        <button class="btn-edit-card" name="editBtn" value="{{@index}}"><i class="fas fa-pen"></i></button>
+                    </form>
+                    <form method="post" action="/quotes-delete">
+                        <button class="btn-delete" name="deleteBtn" value="{{@index}}"><i class="fas fa-trash"></i></button>
+                    </form>
+                    <form method="post" action="/quotes-view">
+                        <button class="btn-view" name="viewBtn" value="{{@index}}"><i class="fas fa-folder-open"></i></button>
+                    </form>
                 </div>
             {{/each}}
         </div>

@@ -3,6 +3,7 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   background: gray;
   text-align: center;
+  min-width: 250px;
 }
 
 a {
@@ -17,6 +18,7 @@ input, label {
   padding: 5px;
   border: none;
   border-radius: 5px;
+  min-width: 50px;
 }
 
 .btn-add,
@@ -34,33 +36,69 @@ input, label {
   color: black;
 }
 
-.btn-add, .btn-add-card {
+.btn-deny {
+  padding: 8.5px 11.5px;
+}
+
+.btn-add,
+.btn-add-card,
+.btn-delete {
   padding: 8.5px 11px;
 }
 
-.btn-edit, .btn-edit-card {
+.btn-edit,
+.btn-edit-card,
+.btn-view,
+.btn-confirm {
   padding: 8.5px 10px;
 }
 
+.btn-view {
+  padding: 8.5px;
+}
+
 .btn-edit-card,
-.btn-add-card {
+.btn-add-card,
+.btn-delete,
+.btn-view,
+.btn-confirm,
+.btn-deny {
   position: absolute;
-  top: 15px;
   background: white;
   color: black;
   border-radius: 50%;
 }
 .btn-edit-card:hover,
-.btn-add-card:hover {
+.btn-add-card:hover,
+.btn-delete:hover,
+.btn-view:hover,
+.btn-confirm:hover,
+.btn-deny:hover {
   color: white;
 }
 
-.btn-edit-card {
+.btn-add-card,
+.btn-edit-card,
+.btn-view,
+.btn-confirm {
   right: 15px;
 }
 
-.btn-add-card {
+.btn-delete,
+.btn-deny {
   left: 15px;
+}
+
+.btn-add-card,
+.btn-delete,
+.btn-edit-card {
+  top: 15px;
+}
+
+.btn-view,
+.btn-confirm,
+.btn-deny {
+  bottom: 15px;
 }
 
 .header {
@@ -88,6 +126,14 @@ input, label {
   bottom: 15px;
   width: 100%;
 }
+.footer a {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  color: white;
+}
+.footer a:hover {
+  text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+  color: black;
+}
 
 .index {
   font-size: 1.4em;
@@ -102,6 +148,8 @@ input, label {
 .index a {
   padding: 10px;
   border: 2px solid lightgray;
+  border-radius: 5px;
+  background: black;
   width: 120px;
   margin: 5px auto;
 }
@@ -112,9 +160,11 @@ input, label {
   max-width: 400px;
   margin: 0 auto;
 }
-.card-container .card, .card-container .update, .card-container .add {
+.card-container .card, .card-container .update, .card-container .add, .card-container .delete {
+  border: 2px solid lightgray;
+  border-radius: 5px;
   position: relative;
-  min-width: 150px;
+  min-width: 200px;
   width: 350px;
   margin: 40px auto;
   color: white;
@@ -123,39 +173,40 @@ input, label {
   padding: 10px 0 20px;
   font-weight: bold;
 }
-.card-container .card .card-detail, .card-container .update .card-detail, .card-container .add .card-detail {
+.card-container .card .card-detail, .card-container .update .card-detail, .card-container .add .card-detail, .card-container .delete .card-detail {
   display: flex;
   justify-content: left;
   padding: 10px 20px;
 }
-.card-container .card .card-detail p, .card-container .card .card-detail h3, .card-container .update .card-detail p, .card-container .update .card-detail h3, .card-container .add .card-detail p, .card-container .add .card-detail h3 {
+.card-container .card .card-detail p, .card-container .card .card-detail h3, .card-container .update .card-detail p, .card-container .update .card-detail h3, .card-container .add .card-detail p, .card-container .add .card-detail h3, .card-container .delete .card-detail p, .card-container .delete .card-detail h3 {
   margin: 0 5px;
   text-align: left;
 }
-.card-container .card:hover, .card-container .update:hover, .card-container .add:hover {
+.card-container .card:hover, .card-container .update:hover, .card-container .add:hover, .card-container .delete:hover {
+  border-color: black;
   color: black;
   background: white;
 }
-.card-container .card:hover a, .card-container .update:hover a, .card-container .add:hover a {
+.card-container .card:hover a, .card-container .update:hover a, .card-container .add:hover a, .card-container .delete:hover a {
   color: black;
 }
-.card-container .card:hover input, .card-container .update:hover input, .card-container .add:hover input {
+.card-container .card:hover .card-detail input, .card-container .update:hover .card-detail input, .card-container .add:hover .card-detail input, .card-container .delete:hover .card-detail input {
   background: gray;
   color: white;
 }
-.card-container .card:hover button:hover, .card-container .update:hover button:hover, .card-container .add:hover button:hover {
+.card-container .card:hover button:hover, .card-container .update:hover button:hover, .card-container .add:hover button:hover, .card-container .delete:hover button:hover {
   color: white;
 }
-.card-container .card:hover span, .card-container .card:hover button, .card-container .update:hover span, .card-container .update:hover button, .card-container .add:hover span, .card-container .add:hover button {
+.card-container .card:hover span, .card-container .card:hover button, .card-container .update:hover span, .card-container .update:hover button, .card-container .add:hover span, .card-container .add:hover button, .card-container .delete:hover span, .card-container .delete:hover button {
   background: lightgray;
 }
-.card-container .card:hover span:hover, .card-container .card:hover button:hover, .card-container .update:hover span:hover, .card-container .update:hover button:hover, .card-container .add:hover span:hover, .card-container .add:hover button:hover {
+.card-container .card:hover span:hover, .card-container .card:hover button:hover, .card-container .update:hover span:hover, .card-container .update:hover button:hover, .card-container .add:hover span:hover, .card-container .add:hover button:hover, .card-container .delete:hover span:hover, .card-container .delete:hover button:hover {
   background: black;
 }
-.card-container .update .card-detail, .card-container .add .card-detail {
-  justify-content: space-between;
+.card-container .delete {
+  padding-bottom: 40px;
 }
-.card-container .update button, .card-container .add button {
+.card-container .add button {
   background: white;
   color: black;
   border: none;
@@ -164,8 +215,11 @@ input, label {
   font-weight: bold;
   margin-top: 10px;
 }
+.card-container .add .card-detail, .card-container .update .card-detail {
+  justify-content: space-between;
+}
 .card-container .update {
-  display: none;
+  padding-top: 50px;
 }
 
 .btn-increment {

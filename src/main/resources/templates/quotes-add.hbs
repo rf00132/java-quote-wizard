@@ -1,21 +1,22 @@
+{{#partial "title"}}New Quote{{/partial}}
+
 {{# partial "content"}}
     <div class="quotes">
-        <!-- TODO: add data input  -->
         <h1>Add a Quote</h1>
 
         <div class="card-container">
-            <div class="add">
+            <form class="add" method="post" action="/quotes-add">
                 <div class="card-detail">
-                    <label for="QuoteNameInput">Quote Name:</label>
-                    <input id="QuoteNameInput">
+                    <label for="quoteNameInput">Quote Name:</label>
+                    <input id="quoteNameInput" name="quoteNameInput" placeholder="Joe Blogs">
                 </div>
                 <div class="card-detail">
-                    <label for="QuoteCostInput">Quote Contact:</label>
-                    <input id="QuoteCostInput">
+                    <label for="quoteContactInput">Quote Contact:</label>
+                    <input id="quoteContactInput" name="quoteContactInput" placeholder="joeblogs@blogmail.com">
                 </div>
 
-                <button>CREATE</button>
-            </div>
+                <button type="submit">CREATE</button>
+            </form>
         </div>
     </div>
 {{/partial}}

@@ -1,40 +1,33 @@
+{{# partial "title"}}Update {{this.selectedProduct.name}}{{/partial}}
+
+
 {{# partial "content"}}
     <div class="products">
-        <h1>{{ productName }}</h1>
+        <h1>{{ this.selectedProduct.name }}</h1>
         <div class="card-container">
-            <div class="card">
-                <div>
-                    <!-- TODO: add image display for product -->
-                </div>
-                <div class="card-detail">
-                    <h3>Cost: </h3>
-                    <h3>£{{ productPrice }}</h3>
-                </div>
-                <div class="card-detail">
-                    <h3>With VAT: </h3>
-                    <h3>{{ grandTotal }}</h3>
-                </div>
-            </div>
-
-            <div class="update">
+            <!-- todo: fix css at low widths -->
+            <!-- todo: set placeholder values to current values -->
+            <form class="update" method="post" action="/products-update">
                 <div class="card-detail">
                     <label for="productNameInput">Update Name:</label>
-                    <input id="productNameInput">
+                    <input id="productNameInput" name="productNameInput" value="{{this.selectedProduct.name}}">
                 </div>
                 <div class="card-detail">
-                    <label for="productCostInput">Update Price:</label>
-                    <input id="productCostInput">
+                    <label for="productPriceInput">Update Price:</label>
+                    <input id="productPriceInput" name="productPriceInput" value="{{this.selectedProduct.productPrice}}">
                 </div>
                 <div class="card-detail">
-                    <label for="productVatRateInput">Update VAT Rate:</label>
-                    <input id="productVatRateInput">
+                    <label for="productVatInput">Update VAT Rate:</label>
+                    <input id="productVatInput" name="productVatInput" value="{{this.selectedProduct.vatRate}}">
                 </div>
-                <button>UPDATE</button>
-            </div>
+                <button type="submit" class="btn-edit-card" href="/quotes-view"><i class="fas fa-check"></i></button>
+            </form>
         </div>
-        <!-- TODO: on click change from fa-pen to fa-check (or tick equivalent) also have the update box appear -->
-        <span id="editItem" class="btn-edit"><i class="fas fa-pen"></i></span>
     </div>
+{{/partial}}
+
+{{# partial "footer"}}
+
 {{/partial}}
 
 {{> base.hbs}}
