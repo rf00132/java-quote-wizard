@@ -1,0 +1,33 @@
+{{# partial "title"}}Update {{this.selectedProduct.name}}{{/partial}}
+
+
+{{# partial "content"}}
+    <div class="products">
+        <h1>{{ this.selectedProduct.name }}</h1>
+        <div class="card-container">
+            <!-- todo: fix css at low widths -->
+            <!-- todo: set placeholder values to current values -->
+            <form class="update" method="post" action="/products-update">
+                <div class="card-detail">
+                    <label for="productNameInput">Update Name:</label>
+                    <input id="productNameInput" name="productNameInput" value="{{this.selectedProduct.name}}">
+                </div>
+                <div class="card-detail">
+                    <label for="productPriceInput">Update Price:</label>
+                    <input id="productPriceInput" name="productPriceInput" value="{{this.selectedProduct.productPrice}}">
+                </div>
+                <div class="card-detail">
+                    <label for="productVatInput">Update VAT Rate:</label>
+                    <input id="productVatInput" name="productVatInput" value="{{this.selectedProduct.vatRate}}">
+                </div>
+                <button type="submit" class="btn-edit-card" href="/quotes-view"><i class="fas fa-check"></i></button>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+
+{{# partial "footer"}}
+
+{{/partial}}
+
+{{> base.hbs}}

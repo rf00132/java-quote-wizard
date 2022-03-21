@@ -1,0 +1,27 @@
+{{# partial "title"}}Add Product{{/partial}}
+
+{{# partial "content"}}
+    <div class="products">
+        <h1>Add a Product</h1>
+        <div class="card-container">
+            <form method="post" action="/products-add" class="add">
+                <div class="card-detail">
+                    <label for="productNameInput">Product Name:</label>
+                    <input id="productNameInput" name="productNameInput">
+                </div>
+                <div class="card-detail">
+                    <label for="productCostInput">Product Cost:</label>
+                    <input id="productCostInput" name="productCostInput">
+                </div>
+                <div class="card-detail">
+                    <label for="productVatInput">Product VAT Rate:</label>
+                    <input id="productVatInput" name="productVatInput">
+                </div>
+
+                <button type="submit">CREATE</button>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

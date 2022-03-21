@@ -1,0 +1,14 @@
+{{# partial "newtitle"}}Add to {{this.selectedQuote.quoteName}}{{/partial}}
+
+
+{{# partial "cardButton"}}
+    <form method="post" action="/quotes-add-product">
+        <button class="btn-add-card" name="addToQuote" value="{{@index}}"><i class="fas fa-plus"></i></button>
+    </form>
+{{/partial}}
+
+{{# partial "cornerFloatingButton"}}
+    <a class="btn-add" href="/quotes-view"><i class="fas fa-check"></i></a>
+{{/partial}}
+
+{{> products.hbs}}

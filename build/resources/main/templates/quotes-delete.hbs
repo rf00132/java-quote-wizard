@@ -1,0 +1,16 @@
+{{#partial "newtitle"}}Delete {{this.selectedQuote.quoteName}}{{/partial}}
+
+{{# partial "deleteWarning"}}
+    <div class="delete">
+        <h3>Are you sure you wish to delete this quote?</h3>
+
+        <form method="post" action="/quotes-delete-confirm">
+            <button class="btn-confirm" type="submit"><i class="fas fa-check"></i></button>
+        </form>
+        <form method="post" action="/quotes-delete-deny">
+            <button class="btn-deny" type="submit"><i class="fas fa-times"></i></button>
+        </form>
+    </div>
+{{/partial}}
+
+{{> quotes.hbs}}

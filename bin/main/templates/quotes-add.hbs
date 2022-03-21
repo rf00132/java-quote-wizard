@@ -1,0 +1,24 @@
+{{#partial "title"}}New Quote{{/partial}}
+
+{{# partial "content"}}
+    <div class="quotes">
+        <h1>Add a Quote</h1>
+
+        <div class="card-container">
+            <form class="add" method="post" action="/quotes-add">
+                <div class="card-detail">
+                    <label for="quoteNameInput">Quote Name:</label>
+                    <input id="quoteNameInput" name="quoteNameInput" placeholder="Joe Blogs">
+                </div>
+                <div class="card-detail">
+                    <label for="quoteContactInput">Quote Contact:</label>
+                    <input id="quoteContactInput" name="quoteContactInput" placeholder="joeblogs@blogmail.com">
+                </div>
+
+                <button type="submit">CREATE</button>
+            </form>
+        </div>
+    </div>
+{{/partial}}
+
+{{> base.hbs}}

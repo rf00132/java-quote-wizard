@@ -1,0 +1,288 @@
+body {
+  margin: 0;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  background: gray;
+  text-align: center;
+  min-width: 250px;
+}
+
+a {
+  text-decoration: none;
+  color: lightgray;
+}
+a:hover {
+  color: white;
+}
+
+input, label {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  min-width: 50px;
+}
+
+.btn-add,
+.btn-edit {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: black;
+  border-radius: 50%;
+  color: white;
+}
+.btn-add:hover,
+.btn-edit:hover {
+  background: lightgray;
+  color: black;
+}
+
+.btn-deny {
+  padding: 8.5px 11.5px;
+}
+
+.btn-add,
+.btn-add-card,
+.btn-delete {
+  padding: 8.5px 11px;
+}
+
+.btn-edit,
+.btn-edit-card,
+.btn-view,
+.btn-confirm {
+  padding: 8.5px 10px;
+}
+
+.btn-view {
+  padding: 8.5px;
+}
+
+.btn-edit-card,
+.btn-add-card,
+.btn-delete,
+.btn-view,
+.btn-confirm,
+.btn-deny {
+  position: absolute;
+  background: white;
+  color: black;
+  border-radius: 50%;
+}
+.btn-edit-card:hover,
+.btn-add-card:hover,
+.btn-delete:hover,
+.btn-view:hover,
+.btn-confirm:hover,
+.btn-deny:hover {
+  color: white;
+}
+
+.btn-add-card,
+.btn-edit-card,
+.btn-view,
+.btn-confirm {
+  right: 15px;
+}
+
+.btn-delete,
+.btn-deny {
+  left: 15px;
+}
+
+.btn-add-card,
+.btn-delete,
+.btn-edit-card {
+  top: 15px;
+}
+
+.btn-view,
+.btn-confirm,
+.btn-deny {
+  bottom: 15px;
+}
+
+.header {
+  background: black;
+  padding: 15px 25px;
+  font-size: 1.2em;
+}
+.header a {
+  padding: 10px 15px;
+}
+.header a:first-child {
+  font-size: 1.1em;
+}
+.header a:nth-child(n+2) {
+  display: none;
+}
+
+.content {
+  margin: 15px;
+  color: white;
+}
+
+.footer {
+  position: fixed;
+  bottom: 15px;
+  width: 100%;
+}
+.footer a {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  color: white;
+}
+.footer a:hover {
+  text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+  color: black;
+}
+
+.index {
+  font-size: 1.4em;
+}
+.index h1 {
+  font-size: 1.4em;
+}
+.index div {
+  display: flex;
+  flex-direction: column;
+}
+.index a {
+  padding: 10px;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  background: black;
+  width: 120px;
+  margin: 5px auto;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.card-container .card, .card-container .update, .card-container .add, .card-container .delete {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  position: relative;
+  min-width: 200px;
+  width: 350px;
+  margin: 40px auto;
+  color: white;
+  background: black;
+  border-radius: 10px;
+  padding: 10px 0 20px;
+  font-weight: bold;
+}
+.card-container .card .card-detail, .card-container .update .card-detail, .card-container .add .card-detail, .card-container .delete .card-detail {
+  display: flex;
+  justify-content: left;
+  padding: 10px 20px;
+}
+.card-container .card .card-detail p, .card-container .card .card-detail h3, .card-container .update .card-detail p, .card-container .update .card-detail h3, .card-container .add .card-detail p, .card-container .add .card-detail h3, .card-container .delete .card-detail p, .card-container .delete .card-detail h3 {
+  margin: 0 5px;
+  text-align: left;
+}
+.card-container .card:hover, .card-container .update:hover, .card-container .add:hover, .card-container .delete:hover {
+  border-color: black;
+  color: black;
+  background: white;
+}
+.card-container .card:hover a, .card-container .update:hover a, .card-container .add:hover a, .card-container .delete:hover a {
+  color: black;
+}
+.card-container .card:hover .card-detail input, .card-container .update:hover .card-detail input, .card-container .add:hover .card-detail input, .card-container .delete:hover .card-detail input {
+  background: gray;
+  color: white;
+}
+.card-container .card:hover button:hover, .card-container .update:hover button:hover, .card-container .add:hover button:hover, .card-container .delete:hover button:hover {
+  color: white;
+}
+.card-container .card:hover span, .card-container .card:hover button, .card-container .update:hover span, .card-container .update:hover button, .card-container .add:hover span, .card-container .add:hover button, .card-container .delete:hover span, .card-container .delete:hover button {
+  background: lightgray;
+}
+.card-container .card:hover span:hover, .card-container .card:hover button:hover, .card-container .update:hover span:hover, .card-container .update:hover button:hover, .card-container .add:hover span:hover, .card-container .add:hover button:hover, .card-container .delete:hover span:hover, .card-container .delete:hover button:hover {
+  background: black;
+}
+.card-container .delete {
+  padding-bottom: 40px;
+}
+.card-container .add button {
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.card-container .add .card-detail, .card-container .update .card-detail {
+  justify-content: space-between;
+}
+.card-container .update {
+  padding-top: 50px;
+}
+
+.btn-increment {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+.btn-increment button {
+  background: lightgray;
+  border: none;
+  margin: 0 5px;
+  padding: 4px 5px 2px 5px;
+  border-radius: 3px;
+}
+.btn-increment button:hover {
+  background: black;
+  color: white;
+}
+
+@media screen and (min-width: 400px) {
+  .header {
+    padding: 15px 10px;
+  }
+  .header a:nth-child(n+2) {
+    display: inline;
+  }
+
+  .index a {
+    width: 200px;
+    font-size: 1.1em;
+  }
+}
+@media screen and (min-width: 800px) {
+  .header a {
+    font-size: 1.1em;
+  }
+  .header a:first-child {
+    font-size: 1.2em;
+  }
+
+  .footer {
+    font-size: 1.1em;
+  }
+
+  .index a {
+    width: 250px;
+    font-size: 1.2em;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .header a {
+    font-size: 1.2em;
+  }
+  .header a:first-child {
+    font-size: 1.4em;
+  }
+
+  .footer {
+    font-size: 1.2m;
+  }
+
+  .index a {
+    width: 300px;
+    font-size: 1.3em;
+  }
+}/*# sourceMappingURL=main.css.map */

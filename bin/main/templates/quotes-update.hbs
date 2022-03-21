@@ -1,0 +1,31 @@
+{{#partial "title"}}Update {{this.selectedQuote.quoteName}}{{/partial}}
+
+{{# partial "content"}}
+    <div class="quotes">
+        <h1>{{this.selectedQuote.quoteName}}</h1>
+        <div class="card-container">
+            <!-- todo: fix css at low widths -->
+            <!-- todo: set placeholder values to current values -->
+            <form class="update" method="post" action="/quotes-update">
+                <div class="card-detail">
+                    <label for="quoteNameInput">Update Name:</label>
+                    <input id="quoteNameInput" name="quoteNameInput" value="{{this.selectedQuote.quoteName}}">
+                </div>
+                <div class="card-detail">
+                    <label for="quoteContactInput">Update Contact:</label>
+                    <input id="quoteContactInput" name="quoteContactInput" value="{{this.selectedQuote.contact}}">
+                </div>
+
+                <button type="submit" class="btn-edit-card" href="/quotes-view"><i class="fas fa-check"></i></button>
+            </form>
+        </div>
+
+
+    </div>
+{{/partial}}
+
+{{# partial "footer"}}
+
+{{/partial}}
+
+{{> base.hbs}}
